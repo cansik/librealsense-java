@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'org.intel.rs.api'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    jvmArgs '-Djava.library.path=native/lib'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    
+    compile group: 'org.bytedeco', name: 'javacpp', version: '1.5.1'
+}

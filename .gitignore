@@ -1,0 +1,7 @@
+librealsense
+*.class
+*.cpp
+.idea
+.gradle
+out
+native
