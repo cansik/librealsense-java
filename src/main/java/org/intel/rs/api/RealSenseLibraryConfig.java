@@ -9,27 +9,28 @@ import org.bytedeco.javacpp.tools.InfoMapper;
 @Properties(
         value = @Platform(
                 includepath = {
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h"
+                        "../../../librealsense/include/librealsense2"
                 },
                 include = {
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/rs.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/rs_advanced_mode.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/rsutil.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_advanced_mode_command.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_config.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_context.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_device.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_frame.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_internal.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_option.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_pipeline.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_processing.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_record_playback.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_sensor.h",
-                        "/Users/cansik/git/private/librealsense-java/librealsense/include/librealsense2/h/rs_types.h",
+                        "rs.h",
+                        "rs_advanced_mode.h",
+                        "rsutil.h",
+                        "h/rs_advanced_mode_command.h",
+                        "h/rs_config.h",
+                        "h/rs_context.h",
+                        "h/rs_device.h",
+                        "h/rs_frame.h",
+                        "h/rs_internal.h",
+                        "h/rs_option.h",
+                        "h/rs_pipeline.h",
+                        "h/rs_processing.h",
+                        "h/rs_record_playback.h",
+                        "h/rs_sensor.h",
+                        "h/rs_types.h",
                 },
-                linkpath = {"/Users/cansik/git/private/librealsense-java/librealsense/build"},
+                linkpath = {
+                        "../../../librealsense/build"
+                },
                 link = {"realsense2"}
         ),
         target = "org.intel.rs.api.RealSense"
@@ -39,7 +40,8 @@ public class RealSenseLibraryConfig implements InfoMapper {
     public void map(InfoMap infoMap) {
         // RS2_API_VERSION_STR
         infoMap.put(new Info("RS2_API_VERSION_STR")
-                .javaText("public static final String RS2_API_VERSION_STR = RS2_API_MAJOR_VERSION + \".\" + RS2_API_MINOR_VERSION + \".\" + RS2_API_PATCH_VERSION;"));
+                .javaText("public static final String RS2_API_VERSION_STR = RS2_API_MAJOR_VERSION + \".\" " +
+                        "+ RS2_API_MINOR_VERSION + \".\" + RS2_API_PATCH_VERSION;"));
 
         // typedef double fixes
         infoMap.put(new Info("rs2_time_t").valueTypes("double"));

@@ -16,7 +16,7 @@ cd "$javaSrc"
 javac -cp "${workingDir}/javacpp.jar" "${apiDir}/${libName}LibraryConfig.java"
 java -jar "${workingDir}/javacpp.jar" "${apiDir}/${libName}LibraryConfig"
 javac -cp "${workingDir}/javacpp.jar":. "${apiDir}/${libName}.java" # has to be different on windows (;)
-java -jar "${workingDir}/javacpp.jar" "${apiDir}/${libName}"
+java -jar "${workingDir}/javacpp.jar" "${apiDir}/${libName}" -Xcompiler -I${workingDir}/librealsense/include/librealsense2 -Xcompiler -lpthread
 
 # copy native file (maybe not)
 nativeLibFolder="${workingDir}/native/${platformName}/"
