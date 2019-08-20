@@ -12,7 +12,7 @@ repositories {
 }
 
 test {
-    jvmArgs '-Djava.library.path=native/lib'
+    jvmArgs '-Djava.library.path=native/macosx-x86_64:librealsense/build'
 }
 
 dependencies {

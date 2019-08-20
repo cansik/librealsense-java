@@ -1,5 +1,7 @@
 # Intel RealSense Java
-Intel® RealSense™ SDK wrapper for Java.
+Intel® RealSense™ SDK 2 wrapper for Java.
+
+Supported version: `v2.23.0`
 
 ### Build from source
 

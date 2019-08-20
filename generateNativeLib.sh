@@ -24,5 +24,6 @@ mkdir -p "${nativeLibFolder}"
 cp -f "${apiDir}/${platformName}/${jniLibFile}" "${nativeLibFolder}/${jniLibFile}"
 
 # cleanup
-rm "${apiDir}/*.class"
-#rm -rf "${apiDir}/${platformName}"
+rm -rf "${apiDir}/${platformName}"
+cd "${apiDir}"
+rm *.class

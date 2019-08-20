@@ -1,5 +1,10 @@
 package org.intel.rs.api;
 
+import org.bytedeco.javacpp.FunctionPointer;
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.Pointer;
+import org.bytedeco.javacpp.annotation.ByVal;
+import org.bytedeco.javacpp.annotation.Cast;
 import org.bytedeco.javacpp.annotation.Platform;
 import org.bytedeco.javacpp.annotation.Properties;
 import org.bytedeco.javacpp.tools.Info;
@@ -29,7 +34,8 @@ import org.bytedeco.javacpp.tools.InfoMapper;
                         "h/rs_types.h",
                 },
                 linkpath = {
-                        "../../../librealsense/build"
+                        "/Users/cansik/git/private/librealsense-java/librealsense/build"
+                        //"../../../librealsense/build"
                 },
                 link = {"realsense2"}
         ),
@@ -74,5 +80,21 @@ public class RealSenseLibraryConfig implements InfoMapper {
         infoMap.put(new Info("rs2_log_severity").enumerate());
         infoMap.put(new Info("rs2_extension").enumerate());
         infoMap.put(new Info("rs2_matchers").enumerate());
+
+        // bypointer
+        //infoMap.put(new Info("::rs2_stream").annotations("@ByPtr"));
+        infoMap.put(new Info("rs2_get_stream_profile_data").skip());
+        infoMap.put(new Info("rs2_create_processing_block_fptr").skip());
+        infoMap.put(new Info("rs2_start_processing_fptr").skip());
+        infoMap.put(new Info("rs2_start_processing_fptr").skip());
+        infoMap.put(new Info("rs2_start").skip());
+        //infoMap.put(new Info("rs2_stream").pointerTypes("StreamPtr").define());
+        //infoMap.put(new Info("rs2_get_stream_profile_data").javaText("public native void setCallback(@ByRef FuncBool callback);"));
+
+        // remove callbacks (easier for the beginning)
+        infoMap.put(new Info("rs2_devices_changed_callback_ptr").skip());
+        infoMap.put(new Info("rs2_pipeline_start_with_callback").skip());
+        infoMap.put(new Info("rs2_pipeline_start_with_config_and_callback").skip());
+        infoMap.put(new Info("rs2_set_notifications_callback").skip());
     }
 }
