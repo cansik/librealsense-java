@@ -1,9 +1,8 @@
 package org.intel.rs;
 
-import java.util.Enumeration;
-
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
+import static org.intel.rs.api.RealSenseUtil.checkError;
+import static org.intel.rs.api.RealSenseUtil.toBoolean;
 
 public class DeviceList implements AutoCloseable {
     protected rs2_device_list instance;
@@ -26,7 +25,7 @@ public class DeviceList implements AutoCloseable {
         return toBoolean(result);
     }
 
-    public int getCount() {
+    public int count() {
         rs2_error error = new rs2_error();
         int deviceCount = rs2_get_device_count(instance, error);
         checkError(error);
@@ -35,7 +34,7 @@ public class DeviceList implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         rs2_delete_device_list(instance);
     }
 }

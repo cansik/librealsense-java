@@ -3,22 +3,14 @@ package org.intel.rs;
 import static org.intel.rs.api.RealSense.*;
 import static org.intel.rs.api.RealSenseUtil.*;
 
-public class Device implements AutoCloseable {
-    protected rs2_device instance;
+public class Sensor implements AutoCloseable  {
+    rs2_sensor instance;
 
-    public Device(rs2_device instance) {
+    public Sensor(rs2_sensor instance) {
         this.instance = instance;
     }
 
-    public SensorList querySensors() {
-        rs2_error error = new rs2_error();
-        rs2_sensor_list sensors = rs2_query_sensors(instance, error);
-        checkError(error);
-
-        return new SensorList(sensors);
-    }
-
-    //region Device Info
+    //region Sensor Info
     public String getName() {
         return getInfo(rs2_camera_info.RS2_CAMERA_INFO_NAME);
     }
@@ -62,14 +54,14 @@ public class Device implements AutoCloseable {
     public String getInfo(rs2_camera_info info) {
         // check if info is supported
         rs2_error error = new rs2_error();
-        boolean isSupported = toBoolean(rs2_supports_device_info(instance, info, error));
+        boolean isSupported = toBoolean(rs2_supports_sensor_info(instance, info, error));
         checkError(error);
 
         if(!isSupported)
             return null;
 
         // read device info
-        String infoText = rs2_get_device_info(instance, info, error).getString();
+        String infoText = rs2_get_sensor_info(instance, info, error).getString();
         checkError(error);
 
         return infoText;
@@ -78,10 +70,22 @@ public class Device implements AutoCloseable {
 
     @Override
     public void close() {
-        rs2_delete_device(instance);
+        rs2_delete_sensor(instance);
     }
 
-    // todo: implement advanced device
-    // todo: implement playback device
-    // todo: implement record device
+    // todo: implement sensor roi settings (AutoExposureSettings)
+
+    // todo: implement sensor options
+
+    // todo: implement open, start, stop, close
+
+    public float getDepthScale() {
+        rs2_error error = new rs2_error();
+        float depthScale = rs2_get_depth_scale(instance, error);
+        checkError(error);
+
+        return depthScale;
+    }
+
+    // todo: implement getStreamProfiles
 }

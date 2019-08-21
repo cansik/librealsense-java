@@ -1,7 +1,5 @@
 package org.inte.rs.test;
 
-import org.bytedeco.javacpp.BytePointer;
-import org.intel.rs.api.RealSense;
 import org.junit.Test;
 
 import static org.intel.rs.api.RealSense.*;
