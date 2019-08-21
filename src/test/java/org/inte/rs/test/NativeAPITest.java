@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.intel.rs.api.RealSense.*;
 
-public class BasicApiTest {
+public class NativeAPITest {
 
     @Test
     public void createContext() {

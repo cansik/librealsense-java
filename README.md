@@ -17,6 +17,11 @@ Currently, following methods are not generated with javacpp because they use cal
 - `rs2_pipeline_start_with_config_and_callback`
 - `rs2_set_notifications_callback`
 
+- `rs2_devices_changed_callback_ptr`
+- `rs2_pipeline_start_with_callback`
+- `rs2_pipeline_start_with_config_and_callback`
+- `rs2_set_notifications_callback`
+
 ### Build from source (currently just for MacOS)
 
 1. Clone this repository
