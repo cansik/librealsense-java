@@ -38,7 +38,26 @@ public class FrameQueue implements Releasable  {
         return new Frame(frame);
     }
 
+    public FrameList waitForFrames() {
+        return waitForFrames(5000);
+    }
 
+    public FrameList waitForFrames(int timeout)
+    {
+        rs2_error error = new rs2_error();
+        rs2_frame frame = rs2_wait_for_frame(instance, timeout, error);
+        checkError(error);
+        return new FrameList(frame);
+    }
+
+    public void enqueue(Frame frame)
+    {
+        rs2_error error = new rs2_error();
+        rs2_frame_add_ref(frame.instance, error);
+        checkError(error);
+
+        rs2_enqueue_frame(frame.instance, instance);
+    }
 
     @Override
     public void release() {

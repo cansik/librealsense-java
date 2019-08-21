@@ -43,7 +43,7 @@ public class FrameList extends Frame {
 
     @Override
     public void release() {
-        // todo: release all frames in list
+        // todo: release all frames in list if necessary
         rs2_release_frame(instance);
     }
 }
