@@ -9,7 +9,7 @@ This repository is based on the following works:
 - https://github.com/edwinRNDR/librealsense
 - https://github.com/cansik/realsense-processing
 
-### Limitations
+### Limitations
 
 Currently, following methods are not generated with javacpp because they use callbacks which can not be auto-generated without javacpp info modifications:
 - `rs2_devices_changed_callback_ptr`
