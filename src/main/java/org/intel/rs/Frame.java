@@ -3,10 +3,10 @@ package org.intel.rs;
 import org.bytedeco.javacpp.Pointer;
 
 import java.nio.ByteBuffer;
-import java.util.stream.Stream;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
+import static org.intel.rs.api.RealSenseUtil.checkError;
+import static org.intel.rs.api.RealSenseUtil.toBoolean;
 
 public class Frame implements Releasable  {
     rs2_frame instance;
