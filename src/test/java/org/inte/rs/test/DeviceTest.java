@@ -30,7 +30,7 @@ public class DeviceTest {
     }
 
     @Test
-    public void getDeviceInfo() {
+    public void getNativeDeviceInfo() {
         DeviceList list = context.queryDevices();
         int count = list.getCount();
         if(count < 0) return;
@@ -38,6 +38,19 @@ public class DeviceTest {
         Device device = list.get(0);
         String info = device.getDeviceInfo(RealSense.rs2_camera_info.RS2_CAMERA_INFO_NAME);
         System.out.println("Name: " + info);
+        device.close();
+    }
+
+    @Test
+    public void getSimpleDeviceInfo() {
+        DeviceList list = context.queryDevices();
+        int count = list.getCount();
+        if(count < 0) return;
+
+        Device device = list.get(0);
+        System.out.println("Name: " + device.getName());
+        System.out.println("In Advanced Mode: " + device.isInAdvancedMode());
+        device.close();
     }
 
 }
