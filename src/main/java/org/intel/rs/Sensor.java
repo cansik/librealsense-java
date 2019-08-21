@@ -1,5 +1,9 @@
 package org.intel.rs;
 
+import org.bytedeco.javacpp.PointerPointer;
+
+import java.util.Arrays;
+
 import static org.intel.rs.api.RealSense.*;
 import static org.intel.rs.api.RealSenseUtil.*;
 
@@ -77,7 +81,46 @@ public class Sensor implements AutoCloseable  {
 
     // todo: implement sensor options
 
-    // todo: implement open, start, stop, close
+    //region Sensor Stream Commands
+    public void open(StreamProfile streamProfile) {
+        rs2_error error = new rs2_error();
+        rs2_open(instance, streamProfile.instance, error);
+        checkError(error);
+    }
+
+    public void open(StreamProfile[] streamProfiles) {
+        rs2_stream_profile[] nativeProfiles = new rs2_stream_profile[streamProfiles.length];
+        for(int i = 0; i < streamProfiles.length; i++) {
+            nativeProfiles[i] = streamProfiles[i].instance;
+        }
+
+        // todo: test this code!
+        rs2_stream_profile arrayPointer = nativeProfiles[0];
+        rs2_error error = new rs2_error();
+        rs2_open_multiple(instance, arrayPointer, nativeProfiles.length, error);
+        checkError(error);
+    }
+
+    public void start(FrameQueue queue) {
+        rs2_error error = new rs2_error();
+        rs2_start_queue(instance, queue.instance, error);
+        checkError(error);
+    }
+
+    // todo: implement start with FrameCallback
+
+    public void stop() {
+        rs2_error error = new rs2_error();
+        rs2_close(instance, error);
+        checkError(error);
+    }
+
+    public void closeSensor() {
+        rs2_error error = new rs2_error();
+        rs2_close(instance, error);
+        checkError(error);
+    }
+    //endregion
 
     public float getDepthScale() {
         rs2_error error = new rs2_error();

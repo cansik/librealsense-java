@@ -18,7 +18,7 @@ public class SensorTest {
         context = new Context();
         DeviceList list = context.queryDevices();
         int count = list.count();
-        if(count < 0) return;
+        if(count < 1) return;
 
         device = list.get(0);
         list.close();
