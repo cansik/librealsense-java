@@ -19,7 +19,7 @@ public class DeviceTest {
 
     @After
     public void closeContext() {
-        context.close();
+        context.release();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class DeviceTest {
         DeviceList list = context.queryDevices();
         int count = list.count();
         System.out.println("Device Count: " + count);
-        list.close();
+        list.release();
     }
 
     @Test
@@ -39,7 +39,7 @@ public class DeviceTest {
         Device device = list.get(0);
         String info = device.getInfo(RealSense.rs2_camera_info.RS2_CAMERA_INFO_NAME);
         System.out.println("Name: " + info);
-        device.close();
+        device.release();
     }
 
     @Test
@@ -51,7 +51,7 @@ public class DeviceTest {
         Device device = list.get(0);
         System.out.println("Name: " + device.getName());
         System.out.println("In Advanced Mode: " + device.isInAdvancedMode());
-        device.close();
+        device.release();
     }
 
 }

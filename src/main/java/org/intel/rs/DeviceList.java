@@ -4,7 +4,7 @@ import static org.intel.rs.api.RealSense.*;
 import static org.intel.rs.api.RealSenseUtil.checkError;
 import static org.intel.rs.api.RealSenseUtil.toBoolean;
 
-public class DeviceList implements AutoCloseable {
+public class DeviceList implements Releasable {
     protected rs2_device_list instance;
 
     public DeviceList(rs2_device_list instance) {
@@ -34,7 +34,7 @@ public class DeviceList implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public void release() {
         rs2_delete_device_list(instance);
     }
 }

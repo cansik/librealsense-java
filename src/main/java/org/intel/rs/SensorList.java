@@ -3,7 +3,7 @@ package org.intel.rs;
 import static org.intel.rs.api.RealSense.*;
 import static org.intel.rs.api.RealSenseUtil.*;
 
-public class SensorList implements AutoCloseable  {
+public class SensorList implements Releasable  {
     rs2_sensor_list instance;
 
     public SensorList(rs2_sensor_list instance) {
@@ -26,7 +26,7 @@ public class SensorList implements AutoCloseable  {
     }
 
     @Override
-    public void close() {
+    public void release() {
         rs2_delete_sensor_list(instance);
     }
 }

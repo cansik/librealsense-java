@@ -3,7 +3,7 @@ package org.intel.rs;
 import static org.intel.rs.api.RealSense.*;
 import static org.intel.rs.api.RealSenseUtil.*;
 
-public class Device implements AutoCloseable {
+public class Device implements Releasable {
     protected rs2_device instance;
 
     public Device(rs2_device instance) {
@@ -77,7 +77,7 @@ public class Device implements AutoCloseable {
     //endregion
 
     @Override
-    public void close() {
+    public void release() {
         rs2_delete_device(instance);
     }
 

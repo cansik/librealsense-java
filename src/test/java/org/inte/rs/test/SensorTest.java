@@ -21,13 +21,13 @@ public class SensorTest {
         if(count < 1) return;
 
         device = list.get(0);
-        list.close();
+        list.release();
     }
 
     @After
     public void close() {
-        device.close();
-        context.close();
+        device.release();
+        context.release();
     }
 
     @Test

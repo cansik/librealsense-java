@@ -3,7 +3,7 @@ package org.intel.rs;
 import static org.intel.rs.api.RealSense.*;
 import static org.intel.rs.api.RealSenseUtil.*;
 
-public class Context implements AutoCloseable {
+public class Context implements Releasable {
     protected rs2_context instance;
 
     public Context() {
@@ -27,7 +27,7 @@ public class Context implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public void release() {
         rs2_delete_context(instance);
     }
 }

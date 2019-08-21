@@ -1,13 +1,10 @@
 package org.intel.rs;
 
-import org.bytedeco.javacpp.PointerPointer;
-
-import java.util.Arrays;
-
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
+import static org.intel.rs.api.RealSenseUtil.checkError;
+import static org.intel.rs.api.RealSenseUtil.toBoolean;
 
-public class Sensor implements AutoCloseable  {
+public class Sensor implements Releasable  {
     rs2_sensor instance;
 
     public Sensor(rs2_sensor instance) {
@@ -73,7 +70,7 @@ public class Sensor implements AutoCloseable  {
     //endregion
 
     @Override
-    public void close() {
+    public void release() {
         rs2_delete_sensor(instance);
     }
 
