@@ -6,7 +6,7 @@ import static org.intel.rs.api.RealSenseUtil.*;
 public class FrameList extends Frame {
 
     public FrameList(rs2_frame instance) {
-        this.instance = instance;
+        super(instance);
     }
 
     public int count() {

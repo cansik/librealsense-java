@@ -20,7 +20,7 @@ public class SensorTest {
         int count = list.count();
         if(count < 1) return;
 
-        device = list.get(0);
+        device = list.create(0);
         list.release();
     }
 

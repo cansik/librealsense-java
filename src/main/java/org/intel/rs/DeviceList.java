@@ -11,7 +11,7 @@ public class DeviceList implements Releasable {
         this.instance = instance;
     }
 
-    public Device get(int index) {
+    public Device create(int index) {
         rs2_error error = new rs2_error();
         rs2_device device = rs2_create_device(instance, index, error);
         checkError(error);
