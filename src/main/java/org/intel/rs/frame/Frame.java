@@ -1,14 +1,18 @@
-package org.intel.rs;
+package org.intel.rs.frame;
 
 import org.bytedeco.javacpp.Pointer;
+import org.intel.rs.util.NativeDecorator;
+import org.intel.rs.sensor.Sensor;
+import org.intel.rs.stream.StreamProfile;
+import org.intel.rs.util.TimeStampDomain;
 
 import java.nio.ByteBuffer;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.checkError;
-import static org.intel.rs.api.RealSenseUtil.toBoolean;
+import static org.intel.rs.util.RealSenseUtil.checkError;
+import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
-public class Frame implements Releasable  {
+public class Frame implements NativeDecorator<rs2_frame> {
     rs2_frame instance;
 
     public Frame(rs2_frame instance) {
@@ -221,6 +225,11 @@ public class Frame implements Releasable  {
         return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_LOW_LIGHT_COMPENSATION);
     }
     // endregion
+
+    @Override
+    public rs2_frame getInstance() {
+        return instance;
+    }
 
     @Override
     public void release() {

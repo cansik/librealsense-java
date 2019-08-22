@@ -1,8 +1,7 @@
-package org.intel.rs;
+package org.intel.rs.frame;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
-import static org.intel.rs.api.RealSenseUtil.checkError;
+import static org.intel.rs.util.RealSenseUtil.checkError;
 
 public class Points extends Frame {
 

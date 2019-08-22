@@ -1,9 +1,12 @@
 package org.intel.rs;
 
-import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
+import org.intel.rs.device.DeviceList;
+import org.intel.rs.util.NativeDecorator;
 
-public class Context implements Releasable {
+import static org.intel.rs.api.RealSense.*;
+import static org.intel.rs.util.RealSenseUtil.*;
+
+public class Context implements NativeDecorator<rs2_context> {
     protected rs2_context instance;
 
     public Context() {
@@ -24,6 +27,11 @@ public class Context implements Releasable {
         checkError(error);
 
         return new DeviceList(devices);
+    }
+
+    @Override
+    public rs2_context getInstance() {
+        return instance;
     }
 
     @Override

@@ -1,10 +1,14 @@
-package org.intel.rs;
+package org.intel.rs.sensor;
+
+import org.intel.rs.stream.StreamProfile;
+import org.intel.rs.frame.FrameQueue;
+import org.intel.rs.util.NativeDecorator;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.checkError;
-import static org.intel.rs.api.RealSenseUtil.toBoolean;
+import static org.intel.rs.util.RealSenseUtil.checkError;
+import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
-public class Sensor implements Releasable  {
+public class Sensor implements NativeDecorator<rs2_sensor> {
     rs2_sensor instance;
 
     public Sensor(rs2_sensor instance) {
@@ -70,6 +74,11 @@ public class Sensor implements Releasable  {
     //endregion
 
     @Override
+    public rs2_sensor getInstance() {
+        return instance;
+    }
+
+    @Override
     public void release() {
         rs2_delete_sensor(instance);
     }
@@ -81,14 +90,14 @@ public class Sensor implements Releasable  {
     //region Sensor Stream Commands
     public void open(StreamProfile streamProfile) {
         rs2_error error = new rs2_error();
-        rs2_open(instance, streamProfile.instance, error);
+        rs2_open(instance, streamProfile.getInstance(), error);
         checkError(error);
     }
 
     public void open(StreamProfile[] streamProfiles) {
         rs2_stream_profile[] nativeProfiles = new rs2_stream_profile[streamProfiles.length];
         for(int i = 0; i < streamProfiles.length; i++) {
-            nativeProfiles[i] = streamProfiles[i].instance;
+            nativeProfiles[i] = streamProfiles[i].getInstance();
         }
 
         // todo: test this code!
@@ -100,7 +109,7 @@ public class Sensor implements Releasable  {
 
     public void start(FrameQueue queue) {
         rs2_error error = new rs2_error();
-        rs2_start_queue(instance, queue.instance, error);
+        rs2_start_queue(instance, queue.getInstance(), error);
         checkError(error);
     }
 

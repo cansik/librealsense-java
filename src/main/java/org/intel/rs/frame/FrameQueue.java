@@ -1,10 +1,12 @@
-package org.intel.rs;
+package org.intel.rs.frame;
+
+import org.intel.rs.util.NativeDecorator;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.checkError;
-import static org.intel.rs.api.RealSenseUtil.toBoolean;
+import static org.intel.rs.util.RealSenseUtil.checkError;
+import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
-public class FrameQueue implements Releasable  {
+public class FrameQueue implements NativeDecorator<rs2_frame_queue> {
     rs2_frame_queue instance;
 
     public FrameQueue() {
@@ -57,6 +59,11 @@ public class FrameQueue implements Releasable  {
         checkError(error);
 
         rs2_enqueue_frame(frame.instance, instance);
+    }
+
+    @Override
+    public rs2_frame_queue getInstance() {
+        return instance;
     }
 
     @Override

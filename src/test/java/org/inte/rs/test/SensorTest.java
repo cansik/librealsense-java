@@ -1,6 +1,9 @@
 package org.inte.rs.test;
 
 import org.intel.rs.*;
+import org.intel.rs.device.Device;
+import org.intel.rs.device.DeviceList;
+import org.intel.rs.sensor.SensorList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

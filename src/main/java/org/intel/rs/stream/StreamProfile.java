@@ -1,14 +1,20 @@
-package org.intel.rs;
+package org.intel.rs.stream;
+
+import org.intel.rs.util.NativeDecorator;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
 
-public class StreamProfile implements Releasable {
+public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     rs2_stream_profile instance;
 
     public StreamProfile(rs2_stream_profile instance)
     {
         this.instance = instance;
+    }
+
+    @Override
+    public rs2_stream_profile getInstance() {
+        return instance;
     }
 
     @Override

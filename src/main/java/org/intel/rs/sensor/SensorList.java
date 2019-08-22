@@ -1,9 +1,11 @@
-package org.intel.rs;
+package org.intel.rs.sensor;
+
+import org.intel.rs.util.NativeDecorator;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
+import static org.intel.rs.util.RealSenseUtil.*;
 
-public class SensorList implements Releasable  {
+public class SensorList implements NativeDecorator<rs2_sensor_list> {
     rs2_sensor_list instance;
 
     public SensorList(rs2_sensor_list instance) {
@@ -23,6 +25,11 @@ public class SensorList implements Releasable  {
         checkError(error);
 
         return sensorCount;
+    }
+
+    @Override
+    public rs2_sensor_list getInstance() {
+        return instance;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.intel.rs;
+package org.intel.rs.util;
 
 import static org.intel.rs.api.RealSense.*;
 

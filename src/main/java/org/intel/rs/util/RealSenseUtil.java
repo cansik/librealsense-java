@@ -1,6 +1,5 @@
-package org.intel.rs.api;
-import org.bytedeco.javacpp.BytePointer;
-import org.intel.rs.RealSenseException;
+package org.intel.rs.util;
+import org.intel.rs.util.RealSenseException;
 
 import static org.intel.rs.api.RealSense.*;
 

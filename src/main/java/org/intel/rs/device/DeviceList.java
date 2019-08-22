@@ -1,10 +1,12 @@
-package org.intel.rs;
+package org.intel.rs.device;
+
+import org.intel.rs.util.NativeDecorator;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.checkError;
-import static org.intel.rs.api.RealSenseUtil.toBoolean;
+import static org.intel.rs.util.RealSenseUtil.checkError;
+import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
-public class DeviceList implements Releasable {
+public class DeviceList implements NativeDecorator<rs2_device_list> {
     protected rs2_device_list instance;
 
     public DeviceList(rs2_device_list instance) {
@@ -31,6 +33,11 @@ public class DeviceList implements Releasable {
         checkError(error);
 
         return deviceCount;
+    }
+
+    @Override
+    public rs2_device_list getInstance() {
+        return instance;
     }
 
     @Override

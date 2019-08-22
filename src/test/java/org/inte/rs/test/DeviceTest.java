@@ -1,8 +1,8 @@
 package org.inte.rs.test;
 
 import org.intel.rs.Context;
-import org.intel.rs.Device;
-import org.intel.rs.DeviceList;
+import org.intel.rs.device.Device;
+import org.intel.rs.device.DeviceList;
 import org.intel.rs.api.RealSense;
 import org.junit.After;
 import org.junit.Before;

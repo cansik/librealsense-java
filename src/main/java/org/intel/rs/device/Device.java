@@ -1,9 +1,12 @@
-package org.intel.rs;
+package org.intel.rs.device;
+
+import org.intel.rs.util.NativeDecorator;
+import org.intel.rs.sensor.SensorList;
 
 import static org.intel.rs.api.RealSense.*;
-import static org.intel.rs.api.RealSenseUtil.*;
+import static org.intel.rs.util.RealSenseUtil.*;
 
-public class Device implements Releasable {
+public class Device implements NativeDecorator<rs2_device> {
     protected rs2_device instance;
 
     public Device(rs2_device instance) {
@@ -75,6 +78,11 @@ public class Device implements Releasable {
         return infoText;
     }
     //endregion
+
+    @Override
+    public rs2_device getInstance() {
+        return instance;
+    }
 
     @Override
     public void release() {

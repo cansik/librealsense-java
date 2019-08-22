@@ -1,7 +1,7 @@
 package org.inte.rs.test;
 
 import org.intel.rs.Context;
-import org.intel.rs.DeviceList;
+import org.intel.rs.device.DeviceList;
 import org.junit.Test;
 
 public class ContextTest {
