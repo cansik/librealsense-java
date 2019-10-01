@@ -1,5 +1,7 @@
 package org.intel.rs;
 
+import org.bytedeco.javacpp.Pointer;
+import org.intel.rs.api.RealSense;
 import org.intel.rs.device.DeviceList;
 import org.intel.rs.util.NativeDecorator;
 
@@ -16,7 +18,7 @@ public class Context implements NativeDecorator<rs2_context> {
 
         // setup device changed callback
         // todo: fix callback => add callbacks to generation
-        rs2_devices_changed_callback changedCallback = new rs2_devices_changed_callback();
+        //rs2_devices_changed_callback changedCallback = new rs2_devices_changed_callback();
         //rs2_set_devices_changed_callback_cpp(instance, changedCallback, error);
         //checkError(error);
     }

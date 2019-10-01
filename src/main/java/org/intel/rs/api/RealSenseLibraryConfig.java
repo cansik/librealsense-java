@@ -3,10 +3,7 @@ package org.intel.rs.api;
 import org.bytedeco.javacpp.FunctionPointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
-import org.bytedeco.javacpp.annotation.ByVal;
-import org.bytedeco.javacpp.annotation.Cast;
-import org.bytedeco.javacpp.annotation.Platform;
-import org.bytedeco.javacpp.annotation.Properties;
+import org.bytedeco.javacpp.annotation.*;
 import org.bytedeco.javacpp.tools.Info;
 import org.bytedeco.javacpp.tools.InfoMap;
 import org.bytedeco.javacpp.tools.InfoMapper;
@@ -82,19 +79,40 @@ public class RealSenseLibraryConfig implements InfoMapper {
         infoMap.put(new Info("rs2_matchers").enumerate());
 
         // bypointer
-        //infoMap.put(new Info("::rs2_stream").annotations("@ByPtr"));
         infoMap.put(new Info("rs2_get_stream_profile_data").skip());
         infoMap.put(new Info("rs2_create_processing_block_fptr").skip());
         infoMap.put(new Info("rs2_start_processing_fptr").skip());
         infoMap.put(new Info("rs2_start_processing_fptr").skip());
-        infoMap.put(new Info("rs2_start").skip());
-        //infoMap.put(new Info("rs2_stream").pointerTypes("StreamPtr").define());
-        //infoMap.put(new Info("rs2_get_stream_profile_data").javaText("public native void setCallback(@ByRef FuncBool callback);"));
+        //infoMap.put(new Info("rs2_start").skip());
+
+        // fixed callbacks
+        //infoMap.put(new Info("rs2_devices_changed_callback").pointerTypes("DeviceChangedCallback"));
+        infoMap.put(new Info("rs2_frame_callback_ptr").pointerTypes("FrameCallbackPointer"));
 
         // remove callbacks (easier for the beginning)
+        infoMap.put(new Info("rs2_devices_changed_callback").skip());
         infoMap.put(new Info("rs2_devices_changed_callback_ptr").skip());
         infoMap.put(new Info("rs2_pipeline_start_with_callback").skip());
         infoMap.put(new Info("rs2_pipeline_start_with_config_and_callback").skip());
         infoMap.put(new Info("rs2_set_notifications_callback").skip());
+    }
+
+    public static class FrameCallbackPointer extends FunctionPointer {
+        static { Loader.load(); }
+        protected FrameCallbackPointer() { allocate(); }
+        private native void allocate();
+
+        public native void call(@ByPtr @Cast("rs2_frame*") Pointer frame, @ByPtr @Cast("void*") Pointer user);
+    }
+
+    private static class DeviceChangedCallback extends FunctionPointer {
+        static { Loader.load(); }
+        /** Pointer cast constructor. Invokes {@link Pointer#Pointer(Pointer)}. */
+        public    DeviceChangedCallback(Pointer p) { super(p); }
+        protected DeviceChangedCallback() { allocate(); }
+        private native void allocate();
+        public native void call(@ByPtr @Cast("rs2_device_list*") Pointer removed,
+                                @ByPtr @Cast("rs2_device_list*") Pointer added,
+                                @ByPtr @Cast("void*") Pointer user);
     }
 }

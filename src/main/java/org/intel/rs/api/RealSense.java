@@ -905,8 +905,6 @@ public static native void rs2_delete_context(rs2_context context);
 * @param callback [in] callback object created from c++ application. ownership over the callback object is moved into the context
 * @param error [out]  if non-null, receives any error that occurs during this call, otherwise, errors are ignored
 */
-public static native void rs2_set_devices_changed_callback_cpp(rs2_context context, rs2_devices_changed_callback callback, @Cast("rs2_error**") PointerPointer error);
-public static native void rs2_set_devices_changed_callback_cpp(rs2_context context, rs2_devices_changed_callback callback, @ByPtrPtr rs2_error error);
 
 /**
 * set callback to get devices changed events
@@ -3395,7 +3393,8 @@ public static native void rs2_close(@Const rs2_sensor sensor, @ByPtrPtr rs2_erro
 * @param user [in] auxiliary  data the user wishes to receive together with every frame callback
 * @param error [out]  if non-null, receives any error that occurs during this call, otherwise, errors are ignored
 */
-
+public static native void rs2_start(@Const rs2_sensor sensor, @ByVal FrameCallbackPointer on_frame, Pointer user, @Cast("rs2_error**") PointerPointer error);
+public static native void rs2_start(@Const rs2_sensor sensor, @ByVal FrameCallbackPointer on_frame, Pointer user, @ByPtrPtr rs2_error error);
 
 /**
 * start streaming from specified configured sensor
@@ -4286,12 +4285,6 @@ public enum rs2_matchers {
     /** Pointer cast constructor. Invokes {@link Pointer#Pointer(Pointer)}. */
     public rs2_options_list(Pointer p) { super(p); }
 }
-@Opaque public static class rs2_devices_changed_callback extends Pointer {
-    /** Empty constructor. Calls {@code super((Pointer)null)}. */
-    public rs2_devices_changed_callback() { super((Pointer)null); }
-    /** Pointer cast constructor. Invokes {@link Pointer#Pointer(Pointer)}. */
-    public rs2_devices_changed_callback(Pointer p) { super(p); }
-}
 @Opaque public static class rs2_notification extends Pointer {
     /** Empty constructor. Calls {@code super((Pointer)null)}. */
     public rs2_notification() { super((Pointer)null); }
@@ -4312,11 +4305,11 @@ public static class rs2_notification_callback_ptr extends FunctionPointer {
     private native void allocate();
     public native void call(rs2_notification arg0, Pointer arg1);
 }
-public static class rs2_frame_callback_ptr extends FunctionPointer {
+public static class FrameCallbackPointer extends FunctionPointer {
     static { Loader.load(); }
     /** Pointer cast constructor. Invokes {@link Pointer#Pointer(Pointer)}. */
-    public    rs2_frame_callback_ptr(Pointer p) { super(p); }
-    protected rs2_frame_callback_ptr() { allocate(); }
+    public    FrameCallbackPointer(Pointer p) { super(p); }
+    protected FrameCallbackPointer() { allocate(); }
     private native void allocate();
     public native void call(rs2_frame arg0, Pointer arg1);
 }
