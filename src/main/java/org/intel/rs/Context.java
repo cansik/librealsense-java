@@ -3,7 +3,8 @@ package org.intel.rs;
 import org.intel.rs.device.DeviceList;
 import org.intel.rs.util.NativeDecorator;
 
-import static org.intel.rs.api.RealSense.*;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import org.bytedeco.librealsense2.*;
 import static org.intel.rs.util.RealSenseUtil.*;
 
 public class Context implements NativeDecorator<rs2_context> {

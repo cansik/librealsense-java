@@ -2,7 +2,8 @@ package org.inte.rs.test;
 
 import org.junit.Test;
 
-import static org.intel.rs.api.RealSense.*;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import org.bytedeco.librealsense2.*;
 
 public class NativeAPITest {
 

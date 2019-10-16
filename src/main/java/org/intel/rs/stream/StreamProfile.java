@@ -2,7 +2,8 @@ package org.intel.rs.stream;
 
 import org.intel.rs.util.NativeDecorator;
 
-import static org.intel.rs.api.RealSense.*;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import org.bytedeco.librealsense2.*;
 
 public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     rs2_stream_profile instance;

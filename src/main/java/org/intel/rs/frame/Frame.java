@@ -8,7 +8,8 @@ import org.intel.rs.util.TimeStampDomain;
 
 import java.nio.ByteBuffer;
 
-import static org.intel.rs.api.RealSense.*;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import org.bytedeco.librealsense2.*;
 import static org.intel.rs.util.RealSenseUtil.checkError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
@@ -19,7 +20,7 @@ public class Frame implements NativeDecorator<rs2_frame> {
         this.instance = instance;
     }
 
-    public boolean isExtendableTo(rs2_extension extension) {
+    public boolean isExtendableTo(int extension) {
         rs2_error error = new rs2_error();
         int result = rs2_is_frame_extendable_to(instance, extension, error);
         checkError(error);
@@ -40,7 +41,7 @@ public class Frame implements NativeDecorator<rs2_frame> {
     }
 
     public boolean isComposite() {
-        return isExtendableTo(rs2_extension.RS2_EXTENSION_COMPOSITE_FRAME);
+        return isExtendableTo(RS2_EXTENSION_COMPOSITE_FRAME);
     }
 
     public ByteBuffer getData() {
@@ -80,7 +81,7 @@ public class Frame implements NativeDecorator<rs2_frame> {
 
     public TimeStampDomain getTimeStampDomain() {
         rs2_error error = new rs2_error();
-        rs2_timestamp_domain result = rs2_get_frame_timestamp_domain(instance, error);
+        int result = rs2_get_frame_timestamp_domain(instance, error);
         checkError(error);
         return new TimeStampDomain(result);
     }
@@ -93,14 +94,14 @@ public class Frame implements NativeDecorator<rs2_frame> {
     }
 
     // region Meta Data Information
-    public double getMetaData(rs2_frame_metadata_value value) {
+    public double getMetaData(int value) {
         rs2_error error = new rs2_error();
         double result = rs2_get_frame_metadata(instance, value, error);
         checkError(error);
         return result;
     }
 
-    public boolean isMetaDataSupported(rs2_frame_metadata_value value) {
+    public boolean isMetaDataSupported(int value) {
         rs2_error error = new rs2_error();
         int result = rs2_supports_frame_metadata(instance, value, error);
         checkError(error);
@@ -108,121 +109,121 @@ public class Frame implements NativeDecorator<rs2_frame> {
     }
 
     public int getFrameCounter() {
-        return (int)getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_FRAME_COUNTER);
+        return (int)getMetaData(RS2_FRAME_METADATA_FRAME_COUNTER);
     }
 
     public double getFrameTimeStamp() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_FRAME_TIMESTAMP);
+        return getMetaData(RS2_FRAME_METADATA_FRAME_TIMESTAMP);
     }
 
     public double getSensorTimeStamp() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_SENSOR_TIMESTAMP);
+        return getMetaData(RS2_FRAME_METADATA_SENSOR_TIMESTAMP);
     }
 
     public double getActualExposure() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_ACTUAL_EXPOSURE);
+        return getMetaData(RS2_FRAME_METADATA_ACTUAL_EXPOSURE);
     }
 
     public int getGainLevel() {
-        return (int)getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_GAIN_LEVEL);
+        return (int)getMetaData(RS2_FRAME_METADATA_GAIN_LEVEL);
     }
 
     public double getAutoExposure() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_AUTO_EXPOSURE);
+        return getMetaData(RS2_FRAME_METADATA_AUTO_EXPOSURE);
     }
 
     public double getWhiteBalance() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_WHITE_BALANCE);
+        return getMetaData(RS2_FRAME_METADATA_WHITE_BALANCE);
     }
 
     public double getTimeOfArrival() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_TIME_OF_ARRIVAL);
+        return getMetaData(RS2_FRAME_METADATA_TIME_OF_ARRIVAL);
     }
 
     public double getTemperature() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_TEMPERATURE);
+        return getMetaData(RS2_FRAME_METADATA_TEMPERATURE);
     }
 
     public double getBackendTimeStamp() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_BACKEND_TIMESTAMP);
+        return getMetaData(RS2_FRAME_METADATA_BACKEND_TIMESTAMP);
     }
 
     public double getActualFPS() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_ACTUAL_FPS);
+        return getMetaData(RS2_FRAME_METADATA_ACTUAL_FPS);
     }
 
     public double getFrameLaserPower() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_FRAME_LASER_POWER);
+        return getMetaData(RS2_FRAME_METADATA_FRAME_LASER_POWER);
     }
 
     public boolean isLaserPowerModeOn() {
-        return toBoolean((int)getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_FRAME_LASER_POWER_MODE));
+        return toBoolean((int)getMetaData(RS2_FRAME_METADATA_FRAME_LASER_POWER_MODE));
     }
 
     public double getExposurePriority() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_EXPOSURE_PRIORITY);
+        return getMetaData(RS2_FRAME_METADATA_EXPOSURE_PRIORITY);
     }
 
     public double getExposureROILeft() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_EXPOSURE_ROI_LEFT);
+        return getMetaData(RS2_FRAME_METADATA_EXPOSURE_ROI_LEFT);
     }
 
     public double getExposureROIRight() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_EXPOSURE_ROI_RIGHT);
+        return getMetaData(RS2_FRAME_METADATA_EXPOSURE_ROI_RIGHT);
     }
 
     public double getExposureROITop() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_EXPOSURE_ROI_TOP);
+        return getMetaData(RS2_FRAME_METADATA_EXPOSURE_ROI_TOP);
     }
 
     public double getExposureROIBottom() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_EXPOSURE_ROI_BOTTOM);
+        return getMetaData(RS2_FRAME_METADATA_EXPOSURE_ROI_BOTTOM);
     }
 
     public double getBrightness() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_BRIGHTNESS);
+        return getMetaData(RS2_FRAME_METADATA_BRIGHTNESS);
     }
 
     public double getContrast() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_CONTRAST);
+        return getMetaData(RS2_FRAME_METADATA_CONTRAST);
     }
 
     public double getSaturation() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_SATURATION);
+        return getMetaData(RS2_FRAME_METADATA_SATURATION);
     }
 
     public double getSharpness() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_SHARPNESS);
+        return getMetaData(RS2_FRAME_METADATA_SHARPNESS);
     }
 
     public double getAutoWhiteBalanceTemperature() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_AUTO_WHITE_BALANCE_TEMPERATURE);
+        return getMetaData(RS2_FRAME_METADATA_AUTO_WHITE_BALANCE_TEMPERATURE);
     }
 
     public double getBacklightCompensation() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_BACKLIGHT_COMPENSATION);
+        return getMetaData(RS2_FRAME_METADATA_BACKLIGHT_COMPENSATION);
     }
 
     public double getHue() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_HUE);
+        return getMetaData(RS2_FRAME_METADATA_HUE);
     }
 
     public double getGamma() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_GAMMA);
+        return getMetaData(RS2_FRAME_METADATA_GAMMA);
     }
 
     public double getManualWhiteBalance() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_MANUAL_WHITE_BALANCE);
+        return getMetaData(RS2_FRAME_METADATA_MANUAL_WHITE_BALANCE);
     }
 
 
     public double getPowerLineFrequency() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_POWER_LINE_FREQUENCY);
+        return getMetaData(RS2_FRAME_METADATA_POWER_LINE_FREQUENCY);
     }
 
 
     public double getLowLightCompensation() {
-        return getMetaData(rs2_frame_metadata_value.RS2_FRAME_METADATA_LOW_LIGHT_COMPENSATION);
+        return getMetaData(RS2_FRAME_METADATA_LOW_LIGHT_COMPENSATION);
     }
     // endregion
 

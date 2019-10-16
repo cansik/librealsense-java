@@ -3,10 +3,12 @@ package org.inte.rs.test;
 import org.intel.rs.Context;
 import org.intel.rs.device.Device;
 import org.intel.rs.device.DeviceList;
-import org.intel.rs.api.RealSense;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.bytedeco.librealsense2.global.realsense2.RS2_CAMERA_INFO_NAME;
 
 public class DeviceTest {
 
@@ -37,7 +39,7 @@ public class DeviceTest {
         if(count < 1) return;
 
         Device device = list.create(0);
-        String info = device.getInfo(RealSense.rs2_camera_info.RS2_CAMERA_INFO_NAME);
+        String info = device.getInfo(RS2_CAMERA_INFO_NAME);
         System.out.println("Name: " + info);
         device.release();
     }

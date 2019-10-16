@@ -1,32 +1,33 @@
 package org.intel.rs.util;
 
-import static org.intel.rs.api.RealSense.rs2_timestamp_domain;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+
+import org.bytedeco.librealsense2.*;
 
 public class TimeStampDomain {
-    rs2_timestamp_domain instance;
+    int instance;
 
-    public TimeStampDomain(rs2_timestamp_domain instance)
-    {
+    public TimeStampDomain(int instance) {
         this.instance = instance;
     }
 
-    public boolean is(rs2_timestamp_domain tsDomain) {
-        return instance.value == tsDomain.value;
+    public boolean is(int tsDomain) {
+        return instance == tsDomain;
     }
 
     public boolean isHardwareClock() {
-        return is(rs2_timestamp_domain.RS2_TIMESTAMP_DOMAIN_HARDWARE_CLOCK);
+        return is(RS2_TIMESTAMP_DOMAIN_HARDWARE_CLOCK);
     }
 
     public boolean isSystemTime() {
-        return is(rs2_timestamp_domain.RS2_TIMESTAMP_DOMAIN_SYSTEM_TIME);
+        return is(RS2_TIMESTAMP_DOMAIN_SYSTEM_TIME);
     }
 
     public boolean isDomainCount() {
-        return is(rs2_timestamp_domain.RS2_TIMESTAMP_DOMAIN_COUNT);
+        return is(RS2_TIMESTAMP_DOMAIN_COUNT);
     }
 
-    public rs2_timestamp_domain getValue() {
+    public int getValue() {
         return instance;
     }
 }

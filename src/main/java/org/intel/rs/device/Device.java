@@ -2,9 +2,9 @@ package org.intel.rs.device;
 
 import org.intel.rs.util.NativeDecorator;
 import org.intel.rs.sensor.SensorList;
-
-import static org.intel.rs.api.RealSense.*;
 import static org.intel.rs.util.RealSenseUtil.*;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import org.bytedeco.librealsense2.*;
 
 public class Device implements NativeDecorator<rs2_device> {
     protected rs2_device instance;
@@ -23,46 +23,46 @@ public class Device implements NativeDecorator<rs2_device> {
 
     //region Device Info
     public String getName() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_NAME);
+        return getInfo(RS2_CAMERA_INFO_NAME);
     }
 
     public String getSerialNumber() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_SERIAL_NUMBER);
+        return getInfo(RS2_CAMERA_INFO_SERIAL_NUMBER);
     }
 
     public String getFirmwareVersion() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_FIRMWARE_VERSION);
+        return getInfo(RS2_CAMERA_INFO_FIRMWARE_VERSION);
     }
 
     public String getRecommendedFirmwareVersion() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_RECOMMENDED_FIRMWARE_VERSION);
+        return getInfo(RS2_CAMERA_INFO_RECOMMENDED_FIRMWARE_VERSION);
     }
 
     public String getPhysicalPort() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_PHYSICAL_PORT);
+        return getInfo(RS2_CAMERA_INFO_PHYSICAL_PORT);
     }
 
     public String getDebugOpCode() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_DEBUG_OP_CODE);
+        return getInfo(RS2_CAMERA_INFO_DEBUG_OP_CODE);
     }
 
     public boolean isInAdvancedMode() {
-        return toBoolean(getInfo(rs2_camera_info.RS2_CAMERA_INFO_ADVANCED_MODE));
+        return toBoolean(getInfo(RS2_CAMERA_INFO_ADVANCED_MODE));
     }
 
     public String getProductId() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_PRODUCT_ID);
+        return getInfo(RS2_CAMERA_INFO_PRODUCT_ID);
     }
 
     public boolean isLocked() {
-        return toBoolean(getInfo(rs2_camera_info.RS2_CAMERA_INFO_CAMERA_LOCKED));
+        return toBoolean(getInfo(RS2_CAMERA_INFO_CAMERA_LOCKED));
     }
 
     public String getUSBTypeDescriptor() {
-        return getInfo(rs2_camera_info.RS2_CAMERA_INFO_USB_TYPE_DESCRIPTOR);
+        return getInfo(RS2_CAMERA_INFO_USB_TYPE_DESCRIPTOR);
     }
 
-    public String getInfo(rs2_camera_info info) {
+    public String getInfo(int info) {
         // check if info is supported
         rs2_error error = new rs2_error();
         boolean isSupported = toBoolean(rs2_supports_device_info(instance, info, error));

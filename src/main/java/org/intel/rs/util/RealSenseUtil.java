@@ -1,7 +1,8 @@
 package org.intel.rs.util;
 import org.intel.rs.util.RealSenseException;
 
-import static org.intel.rs.api.RealSense.*;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import org.bytedeco.librealsense2.*;
 
 public class RealSenseUtil {
     public static void checkError(rs2_error error) {
