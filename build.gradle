@@ -27,3 +27,9 @@ dependencies {
     compile files('lib/librealsense2-2.25.0-1.5.2-linux-x86_64.jar')
     compile files('lib/librealsense2-2.25.0-1.5.2-windows-x86_64.jar')
 }
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
