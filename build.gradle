@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'org.intel.rs.api'
+group 'org.intel.rs'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
