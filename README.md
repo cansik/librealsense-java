@@ -1,9 +1,9 @@
 # Intel RealSense Java
 Intel® RealSense™ SDK 2 wrapper for Java.
 
-Supported version: `v2.25.0`
+Supported version: `v2.29.0`
 
-### Library
+### Library
 
 The library is based on the librealsense2 C-warpper which has been ported by [Samuel Audet](https://github.com/saudet).
 
