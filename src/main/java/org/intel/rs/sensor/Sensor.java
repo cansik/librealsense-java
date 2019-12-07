@@ -138,4 +138,5 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
     }
 
     // todo: implement getStreamProfiles
+
 }

@@ -38,7 +38,7 @@ public class DeviceTest {
         int count = list.count();
         if(count < 1) return;
 
-        Device device = list.create(0);
+        Device device = list.get(0);
         String info = device.getInfo(RS2_CAMERA_INFO_NAME);
         System.out.println("Name: " + info);
         device.release();
@@ -50,7 +50,7 @@ public class DeviceTest {
         int count = list.count();
         if(count < 1) return;
 
-        Device device = list.create(0);
+        Device device = list.get(0);
         System.out.println("Name: " + device.getName());
         System.out.println("In Advanced Mode: " + device.isInAdvancedMode());
         device.release();
