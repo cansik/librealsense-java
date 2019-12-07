@@ -1,6 +1,8 @@
 package org.intel.rs.stream;
 
 import org.bytedeco.javacpp.IntPointer;
+import org.intel.rs.types.Format;
+import org.intel.rs.types.Stream;
 import org.intel.rs.util.NativeDecorator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
@@ -40,8 +42,16 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
         return nativeStreamIndex.get();
     }
 
+    public Stream getStream() {
+        return Stream.fromIndex(getNativeStreamIndex());
+    }
+
     public int getNativeFormatIndex() {
         return nativeFormatIndex.get();
+    }
+
+    public Format getFormat() {
+        return Format.fromIndex(getNativeFormatIndex());
     }
 
     public int getIndex() {
