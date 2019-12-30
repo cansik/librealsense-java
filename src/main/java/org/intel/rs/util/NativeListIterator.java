@@ -2,7 +2,7 @@ package org.intel.rs.util;
 
 import java.util.Iterator;
 
-public class NativeListIterator<T extends NativeList> implements Iterator<T> {
+public class NativeListIterator<T extends NativeList<T>> implements Iterator<T> {
     private final T list;
     private final int count;
 
