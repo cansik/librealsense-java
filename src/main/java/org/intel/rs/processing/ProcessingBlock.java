@@ -14,7 +14,6 @@ public class ProcessingBlock implements NativeDecorator<rs2_processing_block> {
     rs2_processing_block instance;
 
     public ProcessingBlock() {
-
     }
 
     public ProcessingBlock(rs2_processing_block instance) {
