@@ -1,7 +1,11 @@
 package org.intel.rs.frame;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
+
 import org.bytedeco.librealsense2.*;
+import org.intel.rs.types.Extension;
+import org.intel.rs.types.Format;
+import org.intel.rs.types.Stream;
 import org.intel.rs.util.NativeList;
 import org.intel.rs.util.NativeListIterator;
 
@@ -31,8 +35,7 @@ public class FrameList extends Frame implements NativeList<Frame> {
         return new Frame(frame);
     }
 
-    public Frame asFrame()
-    {
+    public Frame asFrame() {
         rs2_error error = new rs2_error();
         rs2_frame_add_ref(instance, error);
         checkError(error);
@@ -40,13 +43,52 @@ public class FrameList extends Frame implements NativeList<Frame> {
         return new Frame(instance);
     }
 
-    public static FrameList fromFrame(Frame frame)
-    {
+    public static FrameList fromFrame(Frame composite) throws Exception {
         rs2_error error = new rs2_error();
-        rs2_frame_add_ref(frame.instance, error);
-        checkError(error);
+        if (composite.isExtendableTo(Extension.CompositeFrame)) {
+            rs2_frame_add_ref(composite.getInstance(), error);
+            checkError(error);
+            return new FrameList(composite.getInstance());
+        }
+        throw new Exception("The frame is a not composite frame");
+    }
 
-        return new FrameList(frame.instance);
+    public static Frame createFrame(rs2_frame ptr) {
+        // todo: currently no error checking
+        rs2_error error = new rs2_error();
+        if (rs2_is_frame_extendable_to(ptr, Extension.Points.getIndex(), error) > 0)
+            return new Points(ptr);
+
+        if (rs2_is_frame_extendable_to(ptr, Extension.DepthFrame.getIndex(), error) > 0)
+            return new DepthFrame(ptr);
+
+        if (rs2_is_frame_extendable_to(ptr, Extension.VideoFrame.getIndex(), error) > 0)
+            return new VideoFrame(ptr);
+
+        return new Frame(ptr);
+    }
+
+    public <T extends Frame> T getFirstOrDefault(Stream stream) {
+        return getFirstOrDefault(stream, Format.Any);
+    }
+
+    public <T extends Frame> T getFirstOrDefault(Stream stream, Format format) {
+        for (Frame frame : this) {
+            if (frame.getProfile().getStream() == stream
+                    && (Format.Any == format || frame.getProfile().getFormat() == format)) {
+                return (T) frame;
+            }
+            frame.release();
+        }
+        return null;
+    }
+
+    public DepthFrame getDepthFrame() {
+        return getFirstOrDefault(Stream.Depth);
+    }
+
+    public VideoFrame getColorFrame() {
+        return getFirstOrDefault(Stream.Color);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.intel.rs.frame;
 
 import org.bytedeco.javacpp.Pointer;
+import org.intel.rs.types.Extension;
 import org.intel.rs.util.NativeDecorator;
 import org.intel.rs.sensor.Sensor;
 import org.intel.rs.stream.StreamProfile;
@@ -18,6 +19,10 @@ public class Frame implements NativeDecorator<rs2_frame> {
 
     public Frame(rs2_frame instance) {
         this.instance = instance;
+    }
+
+    public boolean isExtendableTo(Extension extension) {
+        return isExtendableTo(extension.getIndex());
     }
 
     public boolean isExtendableTo(int extension) {
