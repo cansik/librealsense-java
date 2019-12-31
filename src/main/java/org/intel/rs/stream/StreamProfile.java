@@ -19,8 +19,7 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     private IntPointer uniqueId = new IntPointer(1);
     private IntPointer frameRate = new IntPointer(1);
 
-    public StreamProfile(rs2_stream_profile instance)
-    {
+    public StreamProfile(rs2_stream_profile instance) {
         this.instance = instance;
 
         // load stream profile data
@@ -35,7 +34,13 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
         checkError(error);
     }
 
-    // todo: implement to get extrinsics
+    public rs2_extrinsics getExtrinsicsTo(StreamProfile other) {
+        rs2_error error = new rs2_error();
+        rs2_extrinsics extrinsics = new rs2_extrinsics(1);
+        rs2_get_extrinsics(instance, other.getInstance(), extrinsics, error);
+        checkError(error);
+        return extrinsics;
+    }
 
 
     public int getNativeStreamIndex() {

@@ -1,16 +1,25 @@
 package org.intel.rs.sensor;
 
+import org.intel.rs.option.SensorOptions;
 import org.intel.rs.stream.StreamProfile;
 import org.intel.rs.frame.FrameQueue;
+import org.intel.rs.stream.StreamProfileList;
+import org.intel.rs.stream.VideoStreamProfile;
 import org.intel.rs.util.NativeDecorator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
+
 import org.bytedeco.librealsense2.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.intel.rs.util.RealSenseUtil.checkError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class Sensor implements NativeDecorator<rs2_sensor> {
     rs2_sensor instance;
+    private SensorOptions options;
 
     public Sensor(rs2_sensor instance) {
         this.instance = instance;
@@ -63,7 +72,7 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
         boolean isSupported = toBoolean(rs2_supports_sensor_info(instance, info, error));
         checkError(error);
 
-        if(!isSupported)
+        if (!isSupported)
             return null;
 
         // read device info
@@ -86,7 +95,13 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
 
     // todo: implement sensor roi settings (AutoExposureSettings)
 
-    // todo: implement sensor options
+    public SensorOptions getSensorOptions() {
+        // todo: make this thread safe!
+        if (options == null)
+            options = new SensorOptions(instance);
+
+        return options;
+    }
 
     //region Sensor Stream Commands
     public void open(StreamProfile streamProfile) {
@@ -97,7 +112,7 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
 
     public void open(StreamProfile[] streamProfiles) {
         rs2_stream_profile[] nativeProfiles = new rs2_stream_profile[streamProfiles.length];
-        for(int i = 0; i < streamProfiles.length; i++) {
+        for (int i = 0; i < streamProfiles.length; i++) {
             nativeProfiles[i] = streamProfiles[i].getInstance();
         }
 
@@ -137,6 +152,21 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
         return depthScale;
     }
 
-    // todo: implement getStreamProfiles
+    public StreamProfileList getStreamProfiles() {
+        rs2_error error = new rs2_error();
+        StreamProfileList list = new StreamProfileList(rs2_get_stream_profiles(instance, error));
+        checkError(error);
+        return list;
+    }
 
+
+    public List<VideoStreamProfile> getVideoStreamProfiles() {
+        // todo: not really sure if this is ever working
+        List<VideoStreamProfile> videoProfiles = new ArrayList<VideoStreamProfile>();
+        for (StreamProfile profile : getStreamProfiles()) {
+            if (profile instanceof VideoStreamProfile)
+                videoProfiles.add((VideoStreamProfile) profile);
+        }
+        return videoProfiles;
+    }
 }
