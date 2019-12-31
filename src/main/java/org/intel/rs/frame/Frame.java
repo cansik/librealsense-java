@@ -19,6 +19,9 @@ public class Frame implements NativeDecorator<rs2_frame> {
 
     public Frame(rs2_frame instance) {
         this.instance = instance;
+
+        // todo: check if is necessary
+        keep();
     }
 
     public boolean isExtendableTo(Extension extension) {

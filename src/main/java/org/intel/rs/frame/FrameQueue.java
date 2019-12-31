@@ -38,7 +38,7 @@ public class FrameQueue implements NativeDecorator<rs2_frame_queue> {
         rs2_error error = new rs2_error();
         rs2_frame frame = rs2_wait_for_frame(instance, timeout, error);
         checkError(error);
-        return new Frame(frame);
+        return FrameList.createFrame(frame);
     }
 
     public FrameList waitForFrames() {

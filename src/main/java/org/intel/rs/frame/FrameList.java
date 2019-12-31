@@ -32,7 +32,7 @@ public class FrameList extends Frame implements NativeList<Frame> {
         rs2_error error = new rs2_error();
         rs2_frame frame = rs2_extract_frame(instance, index, error);
         checkError(error);
-        return new Frame(frame);
+        return createFrame(frame);
     }
 
     public Frame asFrame() {
