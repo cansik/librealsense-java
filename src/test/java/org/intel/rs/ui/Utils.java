@@ -12,8 +12,12 @@ public class Utils {
         if(null == byteBuffer)
             return null;
 
-        byte [] b = byteBuffer.array();
-        ByteArrayInputStream in = new ByteArrayInputStream(b);
+        byte[] data = byteBuffer.array();
+        return readByteArrayToBufferedImage(data);
+    }
+
+    public static BufferedImage readByteArrayToBufferedImage(byte[] data) {
+        ByteArrayInputStream in = new ByteArrayInputStream(data);
 
         BufferedImage image = null;
         try {

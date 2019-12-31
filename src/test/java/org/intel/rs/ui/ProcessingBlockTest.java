@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
+import static org.intel.rs.ui.Utils.readByteArrayToBufferedImage;
 import static org.intel.rs.ui.Utils.readByteBufferToBufferedImage;
 
 public class ProcessingBlockTest {
@@ -77,7 +78,10 @@ public class ProcessingBlockTest {
         VideoFrame colorizedDepth = colorizer.colorize(depthFrame);
 
         // copy frame data
-        colorImage = readByteBufferToBufferedImage(colorFrame.getData());
+        byte[] data = colorFrame.getManagedArray();
+        colorImage = readByteArrayToBufferedImage(data);
         viewer.display(colorImage);
+
+        frames.release();
     }
 }
