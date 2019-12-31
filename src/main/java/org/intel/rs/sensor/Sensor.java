@@ -12,6 +12,7 @@ import static org.bytedeco.librealsense2.global.realsense2.*;
 import org.bytedeco.librealsense2.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.intel.rs.util.RealSenseUtil.checkError;
@@ -161,7 +162,6 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
 
 
     public List<VideoStreamProfile> getVideoStreamProfiles() {
-        // todo: not really sure if this is ever working
         List<VideoStreamProfile> videoProfiles = new ArrayList<VideoStreamProfile>();
         for (StreamProfile profile : getStreamProfiles()) {
             if (profile instanceof VideoStreamProfile)

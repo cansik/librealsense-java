@@ -1,16 +1,17 @@
 package org.intel.rs.stream;
 
-import static org.bytedeco.librealsense2.global.realsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
-
-import org.bytedeco.librealsense2.*;
-
-import org.intel.rs.sensor.Sensor;
+import org.bytedeco.librealsense2.rs2_error;
+import org.bytedeco.librealsense2.rs2_stream_profile;
+import org.bytedeco.librealsense2.rs2_stream_profile_list;
 import org.intel.rs.util.NativeDecorator;
 import org.intel.rs.util.NativeList;
 import org.intel.rs.util.NativeListIterator;
 
 import java.util.Iterator;
+
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import static org.intel.rs.util.RealSenseUtil.checkError;
+import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class StreamProfileList implements NativeDecorator<rs2_stream_profile_list>, NativeList<StreamProfile> {
     rs2_stream_profile_list instance;
@@ -24,6 +25,15 @@ public class StreamProfileList implements NativeDecorator<rs2_stream_profile_lis
         rs2_error error = new rs2_error();
         rs2_stream_profile profile = rs2_get_stream_profile(instance, index, error);
         checkError(error);
+
+        // check if profile is video
+        boolean isVideoProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_VIDEO, error));
+        checkError(error);
+
+        if(isVideoProfile) {
+            return new VideoStreamProfile(profile);
+        }
+
         return new StreamProfile(profile);
     }
 
