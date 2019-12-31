@@ -2,6 +2,9 @@ package org.intel.rs.frame;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
 import org.bytedeco.librealsense2.*;
+
+import java.nio.ByteBuffer;
+
 import static org.intel.rs.util.RealSenseUtil.checkError;
 
 public class VideoFrame extends Frame {
@@ -37,5 +40,14 @@ public class VideoFrame extends Frame {
         return bpp;
     }
 
-    // todo: implement copyto
+    // todo: implement copy to alternative in java
+
+    public byte[] getManagedArray() {
+        // todo: make faster by reusing managed buffer
+        ByteBuffer directBuffer = getData();
+        ByteBuffer managedBuffer = ByteBuffer.allocate(directBuffer.capacity());
+        managedBuffer.put(directBuffer);
+
+        return managedBuffer.array();
+    }
 }
