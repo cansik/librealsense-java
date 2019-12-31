@@ -1,5 +1,6 @@
 package org.intel.rs.frame;
 
+import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Pointer;
 import org.intel.rs.types.Extension;
 import org.intel.rs.util.NativeDecorator;
@@ -52,12 +53,28 @@ public class Frame implements NativeDecorator<rs2_frame> {
         return isExtendableTo(RS2_EXTENSION_COMPOSITE_FRAME);
     }
 
-    public ByteBuffer getData() {
+    public int getDataSize() {
+        rs2_error error = new rs2_error();
+        int size = rs2_get_frame_data_size(instance, error);
+        checkError(error);
+        return size;
+    }
+
+    public Pointer getDataPointer() {
         rs2_error error = new rs2_error();
         Pointer dataPtr = rs2_get_frame_data(instance, error);
         checkError(error);
+        return dataPtr;
+    }
 
-        return dataPtr.asByteBuffer();
+    public ByteBuffer getData() {
+        int size = getDataSize();
+        Pointer dataPtr = getDataPointer();
+
+        BytePointer ptr = new BytePointer(size);
+        Pointer.memcpy(ptr, dataPtr, size);
+
+        return ptr.asBuffer();
     }
 
     public StreamProfile getProfile()
