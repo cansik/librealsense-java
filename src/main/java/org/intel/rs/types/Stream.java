@@ -1,6 +1,5 @@
 package org.intel.rs.types;
 
-// todo: maybe delete because enums are not necessary
 public enum Stream {
     Any(0),
     Depth(1),
