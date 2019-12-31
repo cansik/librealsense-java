@@ -1,4 +1,4 @@
-package org.inte.rs.test;
+package org.intel.rs.test;
 
 import org.intel.rs.Context;
 import org.intel.rs.device.Device;

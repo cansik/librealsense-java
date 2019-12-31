@@ -1,4 +1,4 @@
-package org.inte.rs.test;
+package org.intel.rs.test;
 
 import org.junit.Test;
 
