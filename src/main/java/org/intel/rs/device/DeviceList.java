@@ -1,16 +1,15 @@
 package org.intel.rs.device;
 
-import org.intel.rs.sensor.Sensor;
+import org.bytedeco.librealsense2.rs2_device;
+import org.bytedeco.librealsense2.rs2_device_list;
+import org.bytedeco.librealsense2.rs2_error;
 import org.intel.rs.util.NativeDecorator;
-
-import static org.bytedeco.librealsense2.global.realsense2.*;
-
-import org.bytedeco.librealsense2.*;
 import org.intel.rs.util.NativeList;
 import org.intel.rs.util.NativeListIterator;
 
 import java.util.Iterator;
 
+import static org.bytedeco.librealsense2.global.realsense2.*;
 import static org.intel.rs.util.RealSenseUtil.checkError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 

@@ -1,5 +1,7 @@
 package org.intel.rs.device;
 
+import org.intel.rs.types.CameraInfo;
+import org.intel.rs.types.Extension;
 import org.intel.rs.util.NativeDecorator;
 import org.intel.rs.sensor.SensorList;
 import static org.intel.rs.util.RealSenseUtil.*;
@@ -62,6 +64,10 @@ public class Device implements NativeDecorator<rs2_device> {
         return getInfo(RS2_CAMERA_INFO_USB_TYPE_DESCRIPTOR);
     }
 
+    public String getInfo(CameraInfo info) {
+        return getInfo(info.getIndex());
+    }
+
     public String getInfo(int info) {
         // check if info is supported
         rs2_error error = new rs2_error();
@@ -87,6 +93,13 @@ public class Device implements NativeDecorator<rs2_device> {
     @Override
     public void release() {
         rs2_delete_device(instance);
+    }
+
+    public boolean isExtendableTo(Extension extension) {
+        rs2_error error = new rs2_error();
+        int result = rs2_is_device_extendable_to(instance, extension.getIndex(), error);
+        checkError(error);
+        return toBoolean(result);
     }
 
     // todo: implement advanced device

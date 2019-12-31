@@ -5,6 +5,8 @@ import org.intel.rs.stream.StreamProfile;
 import org.intel.rs.frame.FrameQueue;
 import org.intel.rs.stream.StreamProfileList;
 import org.intel.rs.stream.VideoStreamProfile;
+import org.intel.rs.types.CameraInfo;
+import org.intel.rs.types.Extension;
 import org.intel.rs.util.NativeDecorator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
@@ -31,40 +33,8 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
         return getInfo(RS2_CAMERA_INFO_NAME);
     }
 
-    public String getSerialNumber() {
-        return getInfo(RS2_CAMERA_INFO_SERIAL_NUMBER);
-    }
-
-    public String getFirmwareVersion() {
-        return getInfo(RS2_CAMERA_INFO_FIRMWARE_VERSION);
-    }
-
-    public String getRecommendedFirmwareVersion() {
-        return getInfo(RS2_CAMERA_INFO_RECOMMENDED_FIRMWARE_VERSION);
-    }
-
-    public String getPhysicalPort() {
-        return getInfo(RS2_CAMERA_INFO_PHYSICAL_PORT);
-    }
-
-    public String getDebugOpCode() {
-        return getInfo(RS2_CAMERA_INFO_DEBUG_OP_CODE);
-    }
-
-    public boolean isInAdvancedMode() {
-        return toBoolean(getInfo(RS2_CAMERA_INFO_ADVANCED_MODE));
-    }
-
-    public String getProductId() {
-        return getInfo(RS2_CAMERA_INFO_PRODUCT_ID);
-    }
-
-    public boolean isLocked() {
-        return toBoolean(getInfo(RS2_CAMERA_INFO_CAMERA_LOCKED));
-    }
-
-    public String getUSBTypeDescriptor() {
-        return getInfo(RS2_CAMERA_INFO_USB_TYPE_DESCRIPTOR);
+    public String getInfo(CameraInfo info) {
+        return getInfo(info.getIndex());
     }
 
     public String getInfo(int info) {
@@ -168,5 +138,12 @@ public class Sensor implements NativeDecorator<rs2_sensor> {
                 videoProfiles.add((VideoStreamProfile) profile);
         }
         return videoProfiles;
+    }
+
+    public boolean isExtendableTo(Extension extension) {
+        rs2_error error = new rs2_error();
+        int result = rs2_is_sensor_extendable_to(instance, extension.getIndex(), error);
+        checkError(error);
+        return toBoolean(result);
     }
 }
