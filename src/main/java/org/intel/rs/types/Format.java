@@ -1,6 +1,6 @@
 package org.intel.rs.types;
 
-// todo: maybe delete becuase enums are not necessary
+// todo: maybe delete because enums are not necessary
 public enum Format {
     Any(0),
     Z16(1),
