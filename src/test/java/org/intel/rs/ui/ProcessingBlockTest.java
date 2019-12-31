@@ -55,10 +55,6 @@ public class ProcessingBlockTest {
 
         System.out.println("camera has been started!");
 
-        Sensor sensor = StreamUtils.asStream(pp.getDevice().querySensors().iterator())
-                .filter(s -> s.isExtendableTo(Extension.DepthSensor))
-                .findFirst().get();
-
         // setting up thread to read data
         Thread thread = new Thread(() -> {
             while (running) {
@@ -75,6 +71,8 @@ public class ProcessingBlockTest {
 
         VideoFrame colorFrame = frames.getColorFrame();
         VideoFrame depthFrame = frames.getDepthFrame();
+
+        System.out.println("frames extracted!");
 
         VideoFrame colorizedDepth = colorizer.colorize(depthFrame);
 

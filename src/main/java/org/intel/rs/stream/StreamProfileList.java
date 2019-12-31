@@ -57,6 +57,6 @@ public class StreamProfileList implements NativeDecorator<rs2_stream_profile_lis
 
     @Override
     public Iterator<StreamProfile> iterator() {
-        return new NativeListIterator(this);
+        return new NativeListIterator<>(this);
     }
 }

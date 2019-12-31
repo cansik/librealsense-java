@@ -2,13 +2,13 @@ package org.intel.rs.util;
 
 import java.util.Iterator;
 
-public class NativeListIterator<T extends NativeList<T>> implements Iterator<T> {
-    private final T list;
+public class NativeListIterator<T> implements Iterator<T> {
+    private final NativeList<T> list;
     private final int count;
 
     private volatile int index = 0;
 
-    public NativeListIterator(T list) {
+    public NativeListIterator(NativeList<T> list) {
         this.list = list;
         this.count = list.count();
     }
@@ -20,6 +20,6 @@ public class NativeListIterator<T extends NativeList<T>> implements Iterator<T> 
 
     @Override
     public T next() {
-        return (T)list.get(index++);
+        return list.get(index++);
     }
 }

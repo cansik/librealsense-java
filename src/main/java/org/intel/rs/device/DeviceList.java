@@ -56,6 +56,6 @@ public class DeviceList implements NativeDecorator<rs2_device_list>, NativeList<
 
     @Override
     public Iterator<Device> iterator() {
-        return new NativeListIterator(this);
+        return new NativeListIterator<>(this);
     }
 }

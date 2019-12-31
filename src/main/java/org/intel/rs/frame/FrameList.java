@@ -99,6 +99,6 @@ public class FrameList extends Frame implements NativeList<Frame> {
 
     @Override
     public Iterator<Frame> iterator() {
-        return new NativeListIterator(this);
+        return new NativeListIterator<>(this);
     }
 }

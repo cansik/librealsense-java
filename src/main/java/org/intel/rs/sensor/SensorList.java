@@ -49,6 +49,6 @@ public class SensorList implements NativeDecorator<rs2_sensor_list>, NativeList<
 
     @Override
     public Iterator<Sensor> iterator() {
-        return new NativeListIterator(this);
+        return new NativeListIterator<>(this);
     }
 }
