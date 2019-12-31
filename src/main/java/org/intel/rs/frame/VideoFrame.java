@@ -42,9 +42,10 @@ public class VideoFrame extends Frame {
 
     // todo: implement copy to alternative in java
 
+
     public byte[] getManagedArray() {
         // todo: make faster by reusing managed buffer
-        ByteBuffer directBuffer = getData();
+        ByteBuffer directBuffer = getDataByteBuffer();
         ByteBuffer managedBuffer = ByteBuffer.allocate(directBuffer.capacity());
         managedBuffer.put(directBuffer);
 

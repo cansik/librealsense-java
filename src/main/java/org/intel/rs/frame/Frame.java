@@ -11,9 +11,9 @@ import org.intel.rs.util.TimeStampDomain;
 import java.nio.ByteBuffer;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
+import static org.intel.rs.util.RealSenseUtil.*;
+
 import org.bytedeco.librealsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
-import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class Frame implements NativeDecorator<rs2_frame> {
     rs2_frame instance;
@@ -60,21 +60,20 @@ public class Frame implements NativeDecorator<rs2_frame> {
         return size;
     }
 
-    public Pointer getDataPointer() {
+    public Pointer getData() {
+        // todo: fix this in java wrapper of javacpp to return directly a bytebuffer
+
         rs2_error error = new rs2_error();
         Pointer dataPtr = rs2_get_frame_data(instance, error);
         checkError(error);
         return dataPtr;
     }
 
-    public ByteBuffer getData() {
+    public ByteBuffer getDataByteBuffer() {
+        Pointer dataPtr = getData();
         int size = getDataSize();
-        Pointer dataPtr = getDataPointer();
 
-        BytePointer ptr = new BytePointer(size);
-        Pointer.memcpy(ptr, dataPtr, size);
-
-        return ptr.asBuffer();
+        return newDirectByteBuffer(dataPtr, size);
     }
 
     public StreamProfile getProfile()
