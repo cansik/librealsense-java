@@ -2,13 +2,9 @@ package org.intel.rs.ui;
 
 import org.intel.rs.frame.VideoFrame;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 public class ImageUtils {
     private static int[] bandOffsets1D = new int[]{0};

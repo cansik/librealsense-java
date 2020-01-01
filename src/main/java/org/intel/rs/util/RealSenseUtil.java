@@ -1,14 +1,8 @@
 package org.intel.rs.util;
-import org.bytedeco.javacpp.Pointer;
-import org.intel.rs.util.RealSenseException;
 
-import static org.bytedeco.librealsense2.global.realsense2.*;
-import org.bytedeco.librealsense2.*;
+import org.bytedeco.librealsense2.rs2_error;
 
-import java.lang.reflect.Field;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import static org.bytedeco.librealsense2.global.realsense2.rs2_get_error_message;
 
 public class RealSenseUtil {
     public static void checkError(rs2_error error) {

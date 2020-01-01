@@ -1,7 +1,6 @@
 package org.intel.rs.util;
 
-import static org.bytedeco.librealsense2.global.realsense2.*;
-import org.bytedeco.librealsense2.*;
+import org.bytedeco.librealsense2.rs2_error;
 
 public class RealSenseException extends RuntimeException {
     private rs2_error error;
