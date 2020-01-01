@@ -12,26 +12,22 @@ import org.intel.rs.types.Stream;
 
 import java.awt.image.BufferedImage;
 
-import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
-
 public class ProcessingBlockTest {
     public static void main(String[] args) {
         new ProcessingBlockTest().runTest();
     }
 
-    SimpleImageViewer viewer = new SimpleImageViewer();
+    SimpleImageViewer colorViewer = new SimpleImageViewer();
+    SimpleImageViewer depthViewer = new SimpleImageViewer();
 
     private Pipeline pipeline = new Pipeline();
     private Colorizer colorizer = new Colorizer();
 
     private volatile boolean running = true;
 
-    BufferedImage colorImage = new BufferedImage(640, 480, TYPE_INT_RGB);
-
     public void runTest() {
-        viewer.open(640, 480);
-        viewer.display(colorImage);
+        colorViewer.open(640, 480, "Color");
+        depthViewer.open(640, 480, "Depth");
 
         System.out.println("setting up camera...");
 
@@ -64,17 +60,16 @@ public class ProcessingBlockTest {
     public void readFrames() {
         FrameList frames = pipeline.waitForFrames();
 
-        System.out.println("frames received!");
-
         VideoFrame colorFrame = frames.getColorFrame();
         DepthFrame depthFrame = frames.getDepthFrame();
 
-        System.out.println("frames extracted!");
-
         VideoFrame colorizedDepth = colorizer.colorize(depthFrame);
 
-        BufferedImage image = ImageUtils.createBufferedImage(colorFrame);
-        viewer.display(image);
+        BufferedImage colorImage = ImageUtils.createBufferedImage(colorFrame);
+        BufferedImage depthImage = ImageUtils.createBufferedImage(colorizedDepth);
+
+        colorViewer.display(colorImage);
+        depthViewer.display(depthImage);
 
         colorizedDepth.release();
         frames.release();

@@ -19,11 +19,16 @@ public class SimpleImageViewer {
     }
 
     public void open(int width, int height) {
+        open(width, height, "Simple Image Viewer");
+    }
+
+    public void open(int width, int height, String title) {
         SwingUtilities.invokeLater(() -> {
-            editorFrame = new JFrame("Simple Image Viewer");
+            editorFrame = new JFrame(title);
             editorFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
             editorFrame.setSize(width, height);
+            editorFrame.setPreferredSize(new Dimension(width, height));
 
             JLabel jLabel = new JLabel();
             jLabel.setIcon(imageIcon);
