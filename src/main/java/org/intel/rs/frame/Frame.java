@@ -60,20 +60,21 @@ public class Frame implements NativeDecorator<rs2_frame> {
         return size;
     }
 
-    public Pointer getData() {
-        // todo: fix this in java wrapper of javacpp to return directly a bytebuffer
-
+    public Pointer getDataPointer() {
         rs2_error error = new rs2_error();
         Pointer dataPtr = rs2_get_frame_data(instance, error);
         checkError(error);
         return dataPtr;
     }
 
-    public ByteBuffer getDataByteBuffer() {
-        Pointer dataPtr = getData();
+    public ByteBuffer getData() {
+        Pointer dataPtr = getDataPointer();
         int size = getDataSize();
 
-        return newDirectByteBuffer(dataPtr, size);
+        BytePointer ptr = new BytePointer(dataPtr);
+        ptr.capacity(size);
+
+        return ptr.asBuffer();
     }
 
     public StreamProfile getProfile()

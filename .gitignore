@@ -6,3 +6,5 @@ librealsense
 out
 native
 build
+frames
+*.log

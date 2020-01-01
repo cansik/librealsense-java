@@ -1,9 +1,14 @@
 package org.intel.rs.frame;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
+
+import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.IntPointer;
+import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.librealsense2.*;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import static org.intel.rs.util.RealSenseUtil.checkError;
 
@@ -43,12 +48,31 @@ public class VideoFrame extends Frame {
     // todo: implement copy to alternative in java
 
 
-    public byte[] getManagedArray() {
+    public ByteBuffer getManagedBuffer() {
         // todo: make faster by reusing managed buffer
-        ByteBuffer directBuffer = getDataByteBuffer();
+        ByteBuffer directBuffer = getData();
         ByteBuffer managedBuffer = ByteBuffer.allocate(directBuffer.capacity());
         managedBuffer.put(directBuffer);
 
-        return managedBuffer.array();
+        return managedBuffer;
+    }
+
+    /**
+     * Copies the pixels (3-Component) into a managed array.
+     * @return Managed int array of pixels.
+     */
+    public int[] getPixels() {
+        Pointer dataPtr = getDataPointer();
+        int size = getDataSize();
+
+        IntPointer ptr = new IntPointer(dataPtr);
+        ptr.capacity(size / 3);
+
+        IntBuffer rawPixels = ptr.asBuffer();
+
+        IntBuffer managedPixels = IntBuffer.allocate(rawPixels.capacity());
+        managedPixels.put(rawPixels);
+
+        return managedPixels.array();
     }
 }
