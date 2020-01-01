@@ -20,13 +20,13 @@ public class Colorizer extends ProcessingBlock {
         checkError(error);
     }
 
-    public VideoFrame colorize(VideoFrame original)
-    {
+    public VideoFrame colorize(VideoFrame original) {
         rs2_error error = new rs2_error();
         rs2_frame_add_ref(original.getInstance(), error);
         checkError(error);
+
         rs2_process_frame(instance, original.getInstance(), error);
         checkError(error);
-        return (VideoFrame)queue.waitForFrame();
+        return (VideoFrame) queue.waitForFrame();
     }
 }
