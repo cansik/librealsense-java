@@ -77,6 +77,21 @@ public class Frame implements NativeDecorator<rs2_frame> {
         return ptr.asBuffer();
     }
 
+    public byte[] getBytes() {
+        Pointer dataPtr = getDataPointer();
+        int size = getDataSize();
+
+        BytePointer ptr = new BytePointer(dataPtr);
+        ptr.capacity(size);
+
+        ByteBuffer rawPixels = ptr.asBuffer();
+
+        ByteBuffer managedPixels = ByteBuffer.allocate(rawPixels.capacity());
+        managedPixels.put(rawPixels);
+
+        return managedPixels.array();
+    }
+
     public StreamProfile getProfile()
     {
         rs2_error error = new rs2_error();
