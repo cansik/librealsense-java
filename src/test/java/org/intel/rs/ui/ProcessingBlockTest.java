@@ -10,13 +10,10 @@ import org.intel.rs.processing.Colorizer;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Stream;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.*;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class ProcessingBlockTest {
     public static void main(String[] args) {
@@ -30,9 +27,7 @@ public class ProcessingBlockTest {
 
     private volatile boolean running = true;
 
-    BufferedImage colorImage = new BufferedImage(640, 480, TYPE_3BYTE_BGR);
-
-    int frameCount = 0;
+    BufferedImage colorImage = new BufferedImage(640, 480, TYPE_INT_RGB);
 
     public void runTest() {
         viewer.open(640, 480);
@@ -78,40 +73,10 @@ public class ProcessingBlockTest {
 
         VideoFrame colorizedDepth = colorizer.colorize(depthFrame);
 
-        // copy frame data
-        int[] pixels = colorFrame.getPixels();
-
-        int width = colorFrame.getWidth();
-        int height = colorFrame.getHeight();
-        int bitDepth = colorFrame.getBitsPerPixel();
-        int pixelStride = colorFrame.getStride();
-        int scanLineStride = width * pixelStride;
-
-        System.out.println("Size: " + width + " x " + height + "\tPixels: " + pixels.length + " Stride: " + pixelStride);
-
-        int[] bitMasks = new int[]{0xff0000, 0x00ff00, 0x0000ff};
-        SinglePixelPackedSampleModel sm = new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT, width, height, bitMasks);
-        DataBufferInt db = new DataBufferInt(pixels, pixels.length);
-
-        WritableRaster wr = Raster.createWritableRaster(sm, db, new Point());
-        ColorModel colorModel = new DirectColorModel(24, 0xff0000, 0x00ff00, 0x0000ff);
-
-        BufferedImage image = new BufferedImage(colorModel, wr, false, null);
-
-        // store frame for debug
-        File outputfile = new File("frame_" + frameCount++ + ".png");
-        try {
-            ImageIO.write(image, "png", outputfile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //colorImage = readByteArrayToBufferedImage(data);
+        BufferedImage image = ImageUtils.createBufferedImage(colorFrame);
         viewer.display(image);
 
         colorizedDepth.release();
         frames.release();
     }
-
-
 }
