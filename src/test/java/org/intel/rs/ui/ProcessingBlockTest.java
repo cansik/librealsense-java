@@ -3,11 +3,13 @@ package org.intel.rs.ui;
 import org.intel.rs.frame.DepthFrame;
 import org.intel.rs.frame.FrameList;
 import org.intel.rs.frame.VideoFrame;
+import org.intel.rs.option.CameraOption;
 import org.intel.rs.pipeline.Config;
 import org.intel.rs.pipeline.Pipeline;
 import org.intel.rs.pipeline.PipelineProfile;
 import org.intel.rs.processing.Colorizer;
 import org.intel.rs.types.Format;
+import org.intel.rs.types.Option;
 import org.intel.rs.types.Stream;
 
 import java.awt.image.BufferedImage;
@@ -45,6 +47,10 @@ public class ProcessingBlockTest {
         cfg.enableStream(Stream.Color, Format.Rgb8);
 
         PipelineProfile pp = pipeline.start(cfg);
+
+        // set color scheme settings
+        CameraOption colorScheme = colorizer.getOptions().get(Option.ColorScheme);
+        colorScheme.setValue(2);
 
         System.out.println("camera has been started!");
 
