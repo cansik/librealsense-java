@@ -8,10 +8,7 @@ import org.intel.rs.option.CameraOption;
 import org.intel.rs.pipeline.Config;
 import org.intel.rs.pipeline.Pipeline;
 import org.intel.rs.pipeline.PipelineProfile;
-import org.intel.rs.processing.Align;
-import org.intel.rs.processing.Colorizer;
-import org.intel.rs.processing.DecimationFilter;
-import org.intel.rs.processing.PointCloud;
+import org.intel.rs.processing.*;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Option;
 import org.intel.rs.types.Stream;
@@ -28,7 +25,9 @@ public class ProcessingViewer extends PApplet {
     private Align align = new Align(Stream.Color);
     private Pipeline pipeline = new Pipeline();
     private Colorizer colorizer = new Colorizer();
-    private DecimationFilter decimationFilter = new DecimationFilter();
+
+    private TemporalFilter temporalFilter = new TemporalFilter();
+    private HoleFillingFilter holeFillingFilter = new HoleFillingFilter();
 
     PImage colorImage = new PImage(640, 480, RGB);
     PImage depthImage = new PImage(640, 480, RGB);
@@ -68,12 +67,16 @@ public class ProcessingViewer extends PApplet {
         VideoFrame colorFrame = alignedFrames.getColorFrame();
         DepthFrame depthFrame = alignedFrames.getDepthFrame();
 
-        VideoFrame colorizedDepth = colorizer.colorize(depthFrame);
+        VideoFrame holeFrame = holeFillingFilter.process(depthFrame);
+        VideoFrame tempFrame = temporalFilter.process(holeFrame);
+        VideoFrame colorizedDepth = colorizer.colorize(tempFrame);
 
         // convert to PImage
         copyTo(colorFrame, colorImage);
         copyTo(colorizedDepth, depthImage);
 
+        holeFrame.release();
+        tempFrame.release();
         colorizedDepth.release();
         alignedFrames.release();
         frames.release();
