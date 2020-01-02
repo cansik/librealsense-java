@@ -47,4 +47,8 @@ public class SimpleImageViewer {
             editorFrame.setVisible(true);
         });
     }
+
+    public JFrame getEditorFrame() {
+        return editorFrame;
+    }
 }
