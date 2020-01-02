@@ -2,6 +2,7 @@ package org.intel.rs.processing;
 
 import org.bytedeco.librealsense2.rs2_error;
 import org.bytedeco.librealsense2.rs2_processing_block;
+import org.intel.rs.frame.Frame;
 import org.intel.rs.frame.FrameQueue;
 import org.intel.rs.frame.VideoFrame;
 
@@ -23,8 +24,7 @@ public abstract class FilterProcessingBlock extends ProcessingBlock {
         checkError(error);
     }
 
-    public VideoFrame applyFilter(VideoFrame original)
-    {
+    public <T extends Frame> T process(VideoFrame original) {
         rs2_error error = new rs2_error();
         rs2_frame_add_ref(original.getInstance(), error);
         checkError(error);
@@ -32,6 +32,6 @@ public abstract class FilterProcessingBlock extends ProcessingBlock {
         rs2_process_frame(instance, original.getInstance(), error);
         checkError(error);
 
-        return (VideoFrame)queue.waitForFrame();
+        return (T) queue.waitForFrame();
     }
 }
