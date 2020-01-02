@@ -5,6 +5,7 @@ import static org.bytedeco.librealsense2.global.realsense2.*;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Pointer;
+import org.bytedeco.javacpp.ShortPointer;
 import org.bytedeco.librealsense2.*;
 
 import java.nio.ByteBuffer;
@@ -45,8 +46,6 @@ public class VideoFrame extends Frame {
         return bpp;
     }
 
-    // todo: implement copy to alternative in java
-
 
     public ByteBuffer getManagedBuffer() {
         // todo: make faster by reusing managed buffer
@@ -59,20 +58,22 @@ public class VideoFrame extends Frame {
 
     /**
      * Copies the pixels (3-Component) into a managed array.
+     *
      * @return Managed int array of pixels.
      */
-    public int[] getPixels() {
+    public void copyTo(int[] pixels) {
         Pointer dataPtr = getDataPointer();
         int size = getDataSize();
 
-        IntPointer ptr = new IntPointer(dataPtr);
-        ptr.capacity(size / 3);
+        BytePointer ptr = new BytePointer(dataPtr);
+        ptr.capacity(size);
 
-        IntBuffer rawPixels = ptr.asBuffer();
+        ByteBuffer rawPixels = ptr.asBuffer();
 
-        IntBuffer managedPixels = IntBuffer.allocate(rawPixels.capacity());
-        managedPixels.put(rawPixels);
-
-        return managedPixels.array();
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] = ((rawPixels.get() & 0xFF) << 16)
+                    | ((rawPixels.get() & 0xFF) << 8)
+                    | ((rawPixels.get() & 0xFF));
+        }
     }
 }
