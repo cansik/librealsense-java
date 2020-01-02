@@ -18,6 +18,9 @@ test {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
+    // processing
+    testCompile group: 'org.processing', name: 'core', version: '3.3.7'
+
     // java cpp
     compile group: 'org.bytedeco', name: 'javacpp', version: '1.5.2'
 

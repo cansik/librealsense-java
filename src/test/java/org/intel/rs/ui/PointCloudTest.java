@@ -89,7 +89,7 @@ public class PointCloudTest {
         DepthFrame decimatedFrame = decimationFilter.process(depthFrame);
 
         if (counter == 90) {
-            Points points = pointCloud.calculate(decimatedFrame);
+            Points points = pointCloud.calculate(depthFrame);
             System.out.println("Points: " + points.count());
 
             points.exportToPly("cloud.ply", colorFrame);
@@ -99,7 +99,7 @@ public class PointCloudTest {
         }
 
         if (counter == 120) {
-            Points points = pointCloud.calculate(decimatedFrame);
+            Points points = pointCloud.calculate(depthFrame);
             System.out.println("Points: " + points.count());
 
             Vertex[] vertices = points.getVertices();
