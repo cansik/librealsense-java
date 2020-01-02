@@ -80,8 +80,8 @@ public class ProcessingBlockTest {
         BufferedImage colorImage = ImageUtils.createBufferedImage(colorFrame);
         BufferedImage depthImage = ImageUtils.createBufferedImage(colorizedDepth);
 
-        colorViewer.display(colorImage);
-        depthViewer.display(depthImage);
+        colorViewer.display(colorImage, true);
+        depthViewer.display(depthImage, true);
 
         decimatedFrame.release();
         colorizedDepth.release();

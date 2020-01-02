@@ -8,7 +8,15 @@ public class SimpleImageViewer {
     private ImageIcon imageIcon = new ImageIcon();
 
     public void display(Image image) {
+        display(image, false);
+    }
+
+    public void display(Image image, boolean adjustSize) {
         imageIcon.setImage(image);
+
+        if(adjustSize) {
+            editorFrame.setSize(new Dimension(image.getWidth(null), image.getHeight(null)));
+        }
 
         if (editorFrame != null)
             editorFrame.repaint();
