@@ -46,7 +46,14 @@ public enum Option {
     InterCamSyncMode(42),
     StreamFilter(43),
     StreamFormatFilter(44),
-    StreamIndexFilter(45);
+    StreamIndexFilter(45),
+    EmitterOnOff(46),
+    ZeroOrderPointX(47),
+    ZeroOrderPointY(48),
+    LLDTemperature(49),
+    MCTemperature(50),
+    MATemperature (51),
+    APDTemperature (54);
 
     private int index;
 
