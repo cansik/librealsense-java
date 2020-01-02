@@ -18,7 +18,12 @@ public enum Format {
     Uyvy(14),
     MotionRaw(15),
     MotionXyz32f(16),
-    GpioRaw(17);
+    GpioRaw(17),
+    SixDOF(18),
+    Disparity32(19),
+    Y10BPack(20),
+    Distance(21),
+    Mjpeg(22);
 
     private int index;
 

@@ -46,6 +46,7 @@ public class AdvancedDevice extends Device {
         BytePointer data = rs2_get_raw_data(buffer, error);
         checkError(error);
 
+        // todo: correct way to read native string?
         CharPointer charPointer = new CharPointer(data.address());
         charPointer.capacity(size);
 
