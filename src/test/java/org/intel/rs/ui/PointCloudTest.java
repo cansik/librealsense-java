@@ -15,10 +15,14 @@ import org.intel.rs.processing.PointCloud;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Option;
 import org.intel.rs.types.Stream;
+import org.intel.rs.types.Vertex;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 public class PointCloudTest {
     public static void main(String[] args) {
@@ -84,7 +88,7 @@ public class PointCloudTest {
 
         DepthFrame decimatedFrame = decimationFilter.process(depthFrame);
 
-        if(counter == 100) {
+        if (counter == 90) {
             Points points = pointCloud.calculate(decimatedFrame);
             System.out.println("Points: " + points.count());
 
@@ -92,6 +96,14 @@ public class PointCloudTest {
 
             points.release();
             captureCloud = false;
+        }
+
+        if (counter == 120) {
+            Points points = pointCloud.calculate(decimatedFrame);
+            System.out.println("Points: " + points.count());
+
+            Vertex[] vertices = points.getVertices();
+            storeVertices("vertices.xyz", vertices);
         }
 
         VideoFrame colorizedDepth = colorizer.colorize(decimatedFrame);
@@ -108,5 +120,20 @@ public class PointCloudTest {
         frames.release();
 
         counter++;
+    }
+
+    void storeVertices(String fileName, Vertex[] vertices) {
+        try {
+            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+
+            for (int i = 0; i < vertices.length; i++) {
+                Vertex v = vertices[i];
+                writer.println(v.getX() + "," + v.getY() + "," + v.getZ());
+            }
+
+            writer.close();
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }
