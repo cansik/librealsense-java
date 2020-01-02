@@ -1,14 +1,20 @@
 package org.intel.rs;
 
+import org.bytedeco.javacpp.Pointer;
 import org.intel.rs.device.DeviceList;
+import org.intel.rs.device.OnDevicesChangedCallback;
 import org.intel.rs.util.NativeDecorator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
+
 import org.bytedeco.librealsense2.*;
+
 import static org.intel.rs.util.RealSenseUtil.*;
 
 public class Context implements NativeDecorator<rs2_context> {
     protected rs2_context instance;
+    private OnDevicesChangedCallback onDevicesChangedCallback;
+    private rs2_devices_changed_callback_ptr devicesChangedCallbackPointer;
 
     public Context() {
         rs2_error error = new rs2_error();
@@ -16,10 +22,22 @@ public class Context implements NativeDecorator<rs2_context> {
         checkError(error);
 
         // setup device changed callback
-        // todo: fix callback => add callbacks to generation
-        //rs2_devices_changed_callback changedCallback = new rs2_devices_changed_callback()
-        //rs2_set_devices_changed_callback_cpp(instance, changedCallback, error);
-        //checkError(error);
+        devicesChangedCallbackPointer = new rs2_devices_changed_callback_ptr() {
+            @Override
+            public void call(rs2_device_list removedListPtr, rs2_device_list addedListPtr, Pointer userDataPtr) {
+                OnDevicesChangedCallback callback = onDevicesChangedCallback;
+                if (callback != null) {
+                    // todo: check for memory leak
+                    DeviceList removedList = new DeviceList(removedListPtr);
+                    DeviceList addedList = new DeviceList(addedListPtr);
+
+                    callback.onChanged(removedList, addedList);
+                }
+            }
+        };
+
+        rs2_set_devices_changed_callback(instance, devicesChangedCallbackPointer, null, error);
+        checkError(error);
     }
 
     public DeviceList queryDevices() {
@@ -38,5 +56,13 @@ public class Context implements NativeDecorator<rs2_context> {
     @Override
     public void release() {
         rs2_delete_context(instance);
+    }
+
+    public OnDevicesChangedCallback getOnDevicesChangedCallback() {
+        return onDevicesChangedCallback;
+    }
+
+    public void setOnDevicesChangedCallback(OnDevicesChangedCallback onDevicesChangedCallback) {
+        this.onDevicesChangedCallback = onDevicesChangedCallback;
     }
 }
