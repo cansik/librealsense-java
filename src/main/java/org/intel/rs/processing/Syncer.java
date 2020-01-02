@@ -11,7 +11,7 @@ import static org.intel.rs.util.RealSenseUtil.checkError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class Syncer extends ProcessingBlock {
-    private final org.intel.rs.frame.FrameQueue queue = new FrameQueue(1);
+    private final FrameQueue queue = new FrameQueue(1);
 
     public Syncer()
     {

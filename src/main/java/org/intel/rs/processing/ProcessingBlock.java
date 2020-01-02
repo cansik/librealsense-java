@@ -9,7 +9,7 @@ import static org.bytedeco.librealsense2.global.realsense2.rs2_delete_processing
 
 public class ProcessingBlock implements NativeDecorator<rs2_processing_block> {
     rs2_processing_block instance;
-    private SensorOptions options;
+    SensorOptions options;
 
     public ProcessingBlock() {
     }
