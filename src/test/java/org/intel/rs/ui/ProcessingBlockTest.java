@@ -7,7 +7,9 @@ import org.intel.rs.option.CameraOption;
 import org.intel.rs.pipeline.Config;
 import org.intel.rs.pipeline.Pipeline;
 import org.intel.rs.pipeline.PipelineProfile;
+import org.intel.rs.processing.Align;
 import org.intel.rs.processing.Colorizer;
+import org.intel.rs.processing.DecimationFilter;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Option;
 import org.intel.rs.types.Stream;
@@ -22,8 +24,10 @@ public class ProcessingBlockTest {
     SimpleImageViewer colorViewer = new SimpleImageViewer();
     SimpleImageViewer depthViewer = new SimpleImageViewer();
 
+    private Align align = new Align(Stream.Color);
     private Pipeline pipeline = new Pipeline();
     private Colorizer colorizer = new Colorizer();
+    private DecimationFilter decimationFilter = new DecimationFilter();
 
     private volatile boolean running = true;
 
@@ -65,11 +69,13 @@ public class ProcessingBlockTest {
 
     public void readFrames() {
         FrameList frames = pipeline.waitForFrames();
+        FrameList alignedFrames = align.process(frames);
 
-        VideoFrame colorFrame = frames.getColorFrame();
-        DepthFrame depthFrame = frames.getDepthFrame();
+        VideoFrame colorFrame = alignedFrames.getColorFrame();
+        DepthFrame depthFrame = alignedFrames.getDepthFrame();
 
-        VideoFrame colorizedDepth = colorizer.colorize(depthFrame);
+        DepthFrame decimatedFrame = decimationFilter.process(depthFrame);
+        VideoFrame colorizedDepth = colorizer.colorize(decimatedFrame);
 
         BufferedImage colorImage = ImageUtils.createBufferedImage(colorFrame);
         BufferedImage depthImage = ImageUtils.createBufferedImage(colorizedDepth);
@@ -77,7 +83,9 @@ public class ProcessingBlockTest {
         colorViewer.display(colorImage);
         depthViewer.display(depthImage);
 
+        decimatedFrame.release();
         colorizedDepth.release();
+        alignedFrames.release();
         frames.release();
     }
 }
