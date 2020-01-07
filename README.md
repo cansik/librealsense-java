@@ -3,6 +3,19 @@ Intel® RealSense™ SDK 2 wrapper for Java.
 
 Supported version: `v2.29.0`
 
+#### ![#f03c15](https://placehold.it/12/f03c15/000000?text=+) Important
+- The library is still under development
+- Not all methods have been ported yet to fully support `2.29.0` through the high level API
+
+### Examples
+
+There are examples in the test folder for java & AWT and Processing:
+
+- [Viewer Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/org/intel/rs/ui/SimpleImageViewer.java)
+- [Processing Block Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/org/intel/rs/ui/ProcessingBlockTest.java)
+- [Processing Viewer Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/processing/ProcessingViewer.java)
+- [Processing PointCloud Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/processing/ProcessingPointCloudViewer.java)
+
 ### Library
 
 The library is based on the librealsense2 C-warpper which has been ported by [Samuel Audet](https://github.com/saudet).
