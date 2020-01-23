@@ -11,10 +11,12 @@ Supported version: `v2.29.0`
 
 There are examples in the test folder for java & AWT and Processing:
 
-- [Viewer Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/org/intel/rs/ui/SimpleImageViewer.java)
-- [Processing Block Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/org/intel/rs/ui/ProcessingBlockTest.java)
-- [Processing Viewer Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/processing/ProcessingViewer.java)
-- [Processing PointCloud Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/processing/ProcessingPointCloudViewer.java)
+- Java
+  - [Viewer Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/org/intel/rs/ui/SimpleImageViewer.java)
+  - [Processing Block Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/org/intel/rs/ui/ProcessingBlockTest.java)
+- Processing
+  - [Processing Viewer Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/processing/ProcessingViewer.java)
+  - [Processing PointCloud Example](https://github.com/cansik/librealsense-java/blob/master/src/test/java/processing/ProcessingPointCloudViewer.java)
 
 ### Library
 
