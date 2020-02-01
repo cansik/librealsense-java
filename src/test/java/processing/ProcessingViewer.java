@@ -2,23 +2,20 @@ package processing;
 
 import org.intel.rs.frame.DepthFrame;
 import org.intel.rs.frame.FrameList;
-import org.intel.rs.frame.Points;
 import org.intel.rs.frame.VideoFrame;
 import org.intel.rs.option.CameraOption;
 import org.intel.rs.pipeline.Config;
 import org.intel.rs.pipeline.Pipeline;
 import org.intel.rs.pipeline.PipelineProfile;
-import org.intel.rs.processing.*;
+import org.intel.rs.processing.Align;
+import org.intel.rs.processing.Colorizer;
+import org.intel.rs.processing.HoleFillingFilter;
+import org.intel.rs.processing.TemporalFilter;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Option;
 import org.intel.rs.types.Stream;
-import org.intel.rs.types.Vertex;
-import org.intel.rs.ui.ImageUtils;
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.core.PShape;
-
-import java.awt.image.BufferedImage;
 
 public class ProcessingViewer extends PApplet {
 
