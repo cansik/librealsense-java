@@ -11,19 +11,21 @@ import org.intel.rs.util.NativeDecorator;
 
 public class Pipeline implements NativeDecorator<rs2_pipeline> {
     rs2_pipeline instance;
+    private Context context;
 
     public Pipeline(rs2_pipeline instance) {
         this.instance = instance;
     }
 
     public Pipeline(Context context) {
+        this.context = context;
         rs2_error error = new rs2_error();
         instance = rs2_create_pipeline(context.getInstance(), error);
         checkError(error);
     }
 
     public Pipeline() {
-        Context context = new Context();
+        context = new Context();
         rs2_error error = new rs2_error();
         instance = rs2_create_pipeline(context.getInstance(), error);
         checkError(error);
