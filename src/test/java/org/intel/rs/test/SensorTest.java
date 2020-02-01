@@ -26,7 +26,8 @@ public class SensorTest {
 
     @After
     public void close() {
-        device.release();
+        if(device != null)
+            device.release();
         context.release();
     }
 
