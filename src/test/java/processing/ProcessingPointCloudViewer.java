@@ -40,7 +40,7 @@ public class ProcessingPointCloudViewer extends PApplet {
         // create camera
         Config cfg = new Config();
         cfg.enableStream(Stream.Depth, streamWidth, streamHeight);
-        cfg.enableStream(Stream.Color, streamWidth, streamHeight);
+        //cfg.enableStream(Stream.Color, streamWidth, streamHeight);
 
         PipelineProfile pp = pipeline.start(cfg);
 
@@ -72,14 +72,8 @@ public class ProcessingPointCloudViewer extends PApplet {
         // calculate points
         Points points = pointCloud.calculate(decimatedFrame);
 
-        // apply texture
-        VideoFrame texture = frames.getColorFrame();
-        pointCloud.mapTexture(texture);
-
         // copy data
         Vertex[] vertices = points.getVertices();
-        Pixel[] coordinates = points.getTextureCoordinates();
-        ByteBuffer textureBuffer = texture.getData();
 
         points.release();
         decimatedFrame.release();
@@ -88,10 +82,7 @@ public class ProcessingPointCloudViewer extends PApplet {
         // update cloud
         for(int i = 0; i < vertices.length; i++) {
             Vertex v = vertices[i];
-            Pixel coordinate = coordinates[i];
-
             cloud.setVertex(i, v.getX(), v.getY(), v.getZ());
-            cloud.setStroke(getColorAt(textureBuffer, i));
         }
 
         // display cloud
@@ -105,12 +96,6 @@ public class ProcessingPointCloudViewer extends PApplet {
         popMatrix();
 
         surface.setTitle("FPS: " + nfp(frameRate, 0,2));
-    }
-
-    private int getColorAt(ByteBuffer rawPixels, int index) {
-        return ((rawPixels.get(index) & 0xFF) << 16)
-                | ((rawPixels.get(index + 1) & 0xFF) << 8)
-                | ((rawPixels.get(index + 2) & 0xFF));
     }
 
     @Override
