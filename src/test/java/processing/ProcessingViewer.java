@@ -94,4 +94,9 @@ public class ProcessingViewer extends PApplet {
         frame.copyTo(image.pixels);
         image.updatePixels();
     }
+
+    public static void main(String... args) {
+        ProcessingViewer viewer = new ProcessingViewer();
+        viewer.runSketch();
+    }
 }

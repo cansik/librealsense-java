@@ -21,7 +21,9 @@ public class ProcessingPointCloudViewer extends PApplet {
     private PointCloud pointCloud = new PointCloud();
     private DecimationFilter decimationFilter = new DecimationFilter();
 
-    private int cloudSize = 76800;
+    private int streamWidth = 424;
+    private int streamHeight = 240;
+
     private PShape cloud;
 
     @Override
@@ -33,8 +35,8 @@ public class ProcessingPointCloudViewer extends PApplet {
     public void setup() {
         // create camera
         Config cfg = new Config();
-        cfg.enableStream(Stream.Depth, 640, 480);
-        cfg.enableStream(Stream.Color, Format.Rgb8);
+        cfg.enableStream(Stream.Depth, streamWidth, streamHeight);
+        cfg.enableStream(Stream.Color, streamWidth, streamHeight);
 
         PipelineProfile pp = pipeline.start(cfg);
 
@@ -48,7 +50,7 @@ public class ProcessingPointCloudViewer extends PApplet {
         cloud = createShape();
         cloud.setStroke(color(255));
         cloud.beginShape(POINTS);
-        for(int i = 0; i < cloudSize; i++) {
+        for(int i = 0; i < streamWidth * streamHeight * 0.25; i++) {
             cloud.vertex(0, 0, 0);
         }
         cloud.endShape();
@@ -72,7 +74,7 @@ public class ProcessingPointCloudViewer extends PApplet {
         frames.release();
 
         // update cloud
-        for(int i = 0; i < cloudSize; i++) {
+        for(int i = 0; i < vertices.length; i++) {
             Vertex v = vertices[i];
             cloud.setVertex(i, v.getX(), v.getY(), v.getZ());
         }
@@ -93,5 +95,10 @@ public class ProcessingPointCloudViewer extends PApplet {
     @Override
     public void runSketch() {
         super.runSketch();
+    }
+
+    public static void main(String... args) {
+        ProcessingPointCloudViewer viewer = new ProcessingPointCloudViewer();
+        viewer.runSketch();
     }
 }
