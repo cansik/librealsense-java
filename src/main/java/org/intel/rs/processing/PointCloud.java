@@ -34,9 +34,10 @@ public class PointCloud extends ProcessingBlock {
     public void mapTexture(VideoFrame texture) {
         rs2_error error = new rs2_error();
 
-        options.get(Option.StreamFilter).setValue(texture.getProfile().getStream().getIndex());
-        options.get(Option.StreamFormatFilter).setValue(texture.getProfile().getFormat().getIndex());
-        options.get(Option.StreamIndexFilter).setValue(texture.getProfile().getIndex());
+        // use getOptions to call lazy initializer
+        getOptions().get(Option.StreamFilter).setValue(texture.getProfile().getStream().getIndex());
+        getOptions().get(Option.StreamFormatFilter).setValue(texture.getProfile().getFormat().getIndex());
+        getOptions().get(Option.StreamIndexFilter).setValue(texture.getProfile().getIndex());
 
         rs2_frame_add_ref(texture.getInstance(), error);
         checkError(error);
