@@ -1,6 +1,7 @@
 package org.intel.rs.test;
 
 import org.intel.rs.Context;
+import org.intel.rs.device.AdvancedDevice;
 import org.intel.rs.device.Device;
 import org.intel.rs.device.DeviceList;
 
@@ -42,6 +43,7 @@ public class DeviceTest {
         String info = device.getInfo(RS2_CAMERA_INFO_NAME);
         System.out.println("Name: " + info);
         device.release();
+        list.release();
     }
 
     @Test
@@ -54,6 +56,23 @@ public class DeviceTest {
         System.out.println("Name: " + device.getName());
         System.out.println("In Advanced Mode: " + device.isInAdvancedMode());
         device.release();
+        list.release();
     }
 
+    @Test
+    public void getJsonConfigTest() {
+        DeviceList list = context.queryDevices();
+        int count = list.count();
+        if(count < 1) return;
+
+        Device device = list.get(0);
+        AdvancedDevice advancedDevice = AdvancedDevice.fromDevice(device);
+        advancedDevice.setAdvancedModeEnabled(true);
+
+        String config = advancedDevice.getJsonConfiguration();
+        assert(!config.equals(""));
+
+        device.release();
+        list.release();
+    }
 }
