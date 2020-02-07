@@ -3,16 +3,12 @@ plugins {
 }
 
 group 'org.intel.rs'
-version '1.0-SNAPSHOT'
+version '0.2'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-}
-
-test {
-    jvmArgs '-Djava.library.path=native/macosx-x86_64:librealsense/build'
 }
 
 dependencies {
