@@ -75,4 +75,27 @@ public class DeviceTest {
         device.release();
         list.release();
     }
+
+    @Test
+    public void setJsonConfigTest() {
+        String param = "\"controls-laserstate\": \"off\"";
+        String jsonConfig = "{" + param + "}";
+
+        DeviceList list = context.queryDevices();
+        int count = list.count();
+        if(count < 1) return;
+
+        Device device = list.get(0);
+        AdvancedDevice advancedDevice = AdvancedDevice.fromDevice(device);
+        advancedDevice.setAdvancedModeEnabled(true);
+
+        advancedDevice.setJsonConfiguration(jsonConfig);
+
+        // check if config has been set
+        String config = advancedDevice.getJsonConfiguration();
+        assert(config.contains(param));
+
+        device.release();
+        list.release();
+    }
 }

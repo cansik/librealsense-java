@@ -8,6 +8,8 @@ import org.bytedeco.librealsense2.rs2_error;
 import org.bytedeco.librealsense2.rs2_raw_data_buffer;
 import org.intel.rs.types.Extension;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.bytedeco.librealsense2.global.realsense2.*;
 import static org.intel.rs.util.RealSenseUtil.checkError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
@@ -52,8 +54,9 @@ public class AdvancedDevice extends Device {
     public void setJsonConfiguration(String value) {
         rs2_error error = new rs2_error();
 
-        CharPointer charPointer = new CharPointer(value);
-        rs2_load_json(instance, charPointer, value.length(), error);
+        byte[] data = value.getBytes(StandardCharsets.UTF_8);
+        BytePointer dataPointer = new BytePointer(data);
+        rs2_load_json(instance, dataPointer, data.length, error);
         checkError(error);
     }
 }
