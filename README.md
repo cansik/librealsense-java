@@ -7,6 +7,19 @@ Supported version: `v2.29.0`
 - The library is still under development
 - Not all methods have been ported yet to fully support `2.29.0` through the high level API
 
+### Gradle / Maven
+Include the library directly into your gradle / maven build by using [jitpack](https://jitpack.io/#cansik/librealsense-java).
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.cansik:librealsense-java:0.2.1'
+}
+```
+
 ### Examples
 
 There are examples in the test folder for java & AWT and Processing:
