@@ -91,7 +91,7 @@ public class FrameList extends Frame implements NativeList<Frame> {
         return getFirstOrDefault(Stream.Color);
     }
 
-    public VideoFrame getPoseFrame() {
+    public PoseFrame getPoseFrame() {
         return getFirstOrDefault(Stream.Pose);
     }
 
