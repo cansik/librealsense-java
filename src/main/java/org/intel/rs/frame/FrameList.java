@@ -1,8 +1,7 @@
 package org.intel.rs.frame;
 
-import static org.bytedeco.librealsense2.global.realsense2.*;
-
-import org.bytedeco.librealsense2.*;
+import org.bytedeco.librealsense2.rs2_error;
+import org.bytedeco.librealsense2.rs2_frame;
 import org.intel.rs.types.Extension;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Stream;
@@ -11,7 +10,8 @@ import org.intel.rs.util.NativeListIterator;
 
 import java.util.Iterator;
 
-import static org.intel.rs.util.RealSenseUtil.*;
+import static org.bytedeco.librealsense2.global.realsense2.*;
+import static org.intel.rs.util.RealSenseUtil.checkError;
 
 public class FrameList extends Frame implements NativeList<Frame> {
 
@@ -89,6 +89,10 @@ public class FrameList extends Frame implements NativeList<Frame> {
 
     public VideoFrame getColorFrame() {
         return getFirstOrDefault(Stream.Color);
+    }
+
+    public VideoFrame getPoseFrame() {
+        return getFirstOrDefault(Stream.Pose);
     }
 
     @Override
