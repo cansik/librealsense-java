@@ -3,37 +3,35 @@ package org.intel.rs.types;
 import org.bytedeco.librealsense2.rs2_pose;
 import org.bytedeco.librealsense2.rs2_quaternion;
 import org.bytedeco.librealsense2.rs2_vector;
-import org.intel.rs.types.math.Quaternion;
-import org.intel.rs.types.math.Vector;
 
 public class Pose {
-    private final Vector translation;
-    private final Vector velocity;
-    private final Vector acceleration;
-    private final Quaternion rotation;
-    private final Vector angular_velocity;
-    private final Vector angularAcceleration;
+    private final float[] translation;
+    private final float[] velocity;
+    private final float[] acceleration;
+    private final float[] rotation;
+    private final float[] angular_velocity;
+    private final float[] angularAcceleration;
     private final int trackerConfidence;
     private final int mapperConfidence;
 
     public Pose(rs2_pose pose) {
         rs2_vector raw = pose.translation();
-        translation = new Vector(raw.x(), raw.y(), raw.z());
+        translation = new float[]{raw.x(), raw.y(), raw.z()};
 
         raw = pose.velocity();
-        velocity = new Vector(raw.x(), raw.y(), raw.z());
+        velocity = new float[]{raw.x(), raw.y(), raw.z()};
 
         raw = pose.acceleration();
-        acceleration = new Vector(raw.x(), raw.y(), raw.z());
+        acceleration = new float[]{raw.x(), raw.y(), raw.z()};
 
         rs2_quaternion quat = pose.rotation();
-        rotation = new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());
+        rotation = new float[]{quat.x(), quat.y(), quat.z(), quat.w()};
 
         raw = pose.angular_velocity();
-        angular_velocity = new Vector(raw.x(), raw.y(), raw.z());
+        angular_velocity = new float[]{raw.x(), raw.y(), raw.z()};
 
         raw = pose.angular_acceleration();
-        angularAcceleration = new Vector(raw.x(), raw.y(), raw.z());
+        angularAcceleration = new float[]{raw.x(), raw.y(), raw.z()};
 
         trackerConfidence = pose.tracker_confidence();
         mapperConfidence = pose.mapper_confidence();
@@ -44,7 +42,7 @@ public class Pose {
      *
      * @return Vector.
      */
-    public Vector getTranslation() {
+    public float[] getTranslation() {
         return translation;
     }
 
@@ -53,7 +51,7 @@ public class Pose {
      *
      * @return Vector.
      */
-    public Vector getVelocity() {
+    public float[] getVelocity() {
         return velocity;
     }
 
@@ -62,7 +60,7 @@ public class Pose {
      *
      * @return Vector.
      */
-    public Vector getAcceleration() {
+    public float[] getAcceleration() {
         return acceleration;
     }
 
@@ -71,7 +69,7 @@ public class Pose {
      *
      * @return Quaternion.
      */
-    public Quaternion getRotation() {
+    public float[] getRotation() {
         return rotation;
     }
 
@@ -80,7 +78,7 @@ public class Pose {
      *
      * @return Vector.
      */
-    public Vector getAngular_velocity() {
+    public float[] getAngular_velocity() {
         return angular_velocity;
     }
 
@@ -89,7 +87,7 @@ public class Pose {
      *
      * @return Vector.
      */
-    public Vector getAngularAcceleration() {
+    public float[] getAngularAcceleration() {
         return angularAcceleration;
     }
 

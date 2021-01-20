@@ -27,11 +27,27 @@ public class StreamProfileList implements NativeDecorator<rs2_stream_profile_lis
         checkError(error);
 
         // check if profile is video
-        boolean isVideoProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_VIDEO, error));
+        boolean isVideoProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_VIDEO_PROFILE, error));
         checkError(error);
 
         if(isVideoProfile) {
             return new VideoStreamProfile(profile);
+        }
+
+        // check if profile is pose
+        boolean isPoseProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_POSE_PROFILE, error));
+        checkError(error);
+
+        if(isPoseProfile) {
+            return new PoseStreamProfile(profile);
+        }
+
+        // check if profile is motion
+        boolean isMotionProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_MOTION_PROFILE, error));
+        checkError(error);
+
+        if(isMotionProfile) {
+            return new MotionStreamProfile(profile);
         }
 
         return new StreamProfile(profile);
