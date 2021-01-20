@@ -95,6 +95,14 @@ public class FrameList extends Frame implements NativeList<Frame> {
         return getFirstOrDefault(Stream.Pose);
     }
 
+    public MotionFrame getGyroscopeFrame() {
+        return getFirstOrDefault(Stream.Gyro, Format.Xyz32f);
+    }
+
+    public MotionFrame getAccelerometerFrame() {
+        return getFirstOrDefault(Stream.Accel, Format.Xyz32f);
+    }
+
     @Override
     public void release() {
         // todo: release all frames in list if necessary
