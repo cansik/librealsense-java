@@ -7,7 +7,7 @@ import org.intel.rs.frame.FrameList;
 import org.intel.rs.frame.FrameQueue;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 
 public class CustomProcessingBlock extends ProcessingBlock {
 
@@ -16,7 +16,6 @@ public class CustomProcessingBlock extends ProcessingBlock {
     private FrameQueue queue = null;
 
     public CustomProcessingBlock(FrameProcessorCallback cb) {
-        rs2_error error = new rs2_error();
 
         proc_callback = new rs2_frame_processor_callback_ptr() {
             @Override
@@ -26,17 +25,16 @@ public class CustomProcessingBlock extends ProcessingBlock {
                 cb.process(frame, new FrameSource(src));
             }
         };
-        instance = rs2_create_processing_block_fptr(proc_callback, null, error);
-        checkError(error);
+        instance = rs2_create_processing_block_fptr(proc_callback, null, RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 
     public void processFrame(Frame frame) {
-        rs2_error error = new rs2_error();
-        rs2_frame_add_ref(frame.getInstance(), error);
-        checkError(error);
+        rs2_frame_add_ref(frame.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
 
-        rs2_process_frame(instance, frame.getInstance(), error);
-        checkError(error);
+        rs2_process_frame(instance, frame.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 
     public void processFrames(FrameList frameList) {
@@ -45,16 +43,14 @@ public class CustomProcessingBlock extends ProcessingBlock {
     }
 
     public void start(FrameQueue queue) {
-        rs2_error error = new rs2_error();
-        rs2_start_processing_queue(instance, queue.getInstance(), error);
-        checkError(error);
+        rs2_start_processing_queue(instance, queue.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         callback = null;
         this.queue = queue;
     }
 
     public void start(FrameCallback cb) {
-        rs2_error error = new rs2_error();
 
         callback = new rs2_frame_callback_ptr() {
             @Override
@@ -65,8 +61,8 @@ public class CustomProcessingBlock extends ProcessingBlock {
             }
         };
 
-        rs2_start_processing_fptr(instance, callback, null, error);
-        checkError(error);
+        rs2_start_processing_fptr(instance, callback, null, RealSenseError.getInstance());
+        RealSenseError.checkError();
         this.queue = null;
     }
 }

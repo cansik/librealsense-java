@@ -12,7 +12,7 @@ import org.intel.rs.util.NativeListIterator;
 import java.util.Iterator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 
 public class FrameList extends Frame implements NativeList<Frame> {
 
@@ -22,33 +22,29 @@ public class FrameList extends Frame implements NativeList<Frame> {
 
     @Override
     public int count() {
-        rs2_error error = new rs2_error();
-        int count = rs2_embedded_frames_count(instance, error);
-        checkError(error);
+        int count = rs2_embedded_frames_count(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return count;
     }
 
     @Override
     public Frame get(int index) {
-        rs2_error error = new rs2_error();
-        rs2_frame frame = rs2_extract_frame(instance, index, error);
-        checkError(error);
+        rs2_frame frame = rs2_extract_frame(instance, index, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return createFrame(frame);
     }
 
     public Frame asFrame() {
-        rs2_error error = new rs2_error();
-        rs2_frame_add_ref(instance, error);
-        checkError(error);
+        rs2_frame_add_ref(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return new Frame(instance);
     }
 
     public static FrameList fromFrame(Frame composite) throws Exception {
-        rs2_error error = new rs2_error();
         if (composite.isExtendableTo(Extension.CompositeFrame)) {
-            rs2_frame_add_ref(composite.getInstance(), error);
-            checkError(error);
+            rs2_frame_add_ref(composite.getInstance(), RealSenseError.getInstance());
+            RealSenseError.checkError();
             return new FrameList(composite.getInstance());
         }
         throw new Exception("The frame is a not composite frame");
@@ -56,14 +52,13 @@ public class FrameList extends Frame implements NativeList<Frame> {
 
     public static Frame createFrame(rs2_frame ptr) {
         // todo: currently no error checking
-        rs2_error error = new rs2_error();
-        if (rs2_is_frame_extendable_to(ptr, Extension.Points.getIndex(), error) > 0)
+        if (rs2_is_frame_extendable_to(ptr, Extension.Points.getIndex(), RealSenseError.getInstance()) > 0)
             return new Points(ptr);
 
-        if (rs2_is_frame_extendable_to(ptr, Extension.DepthFrame.getIndex(), error) > 0)
+        if (rs2_is_frame_extendable_to(ptr, Extension.DepthFrame.getIndex(), RealSenseError.getInstance()) > 0)
             return new DepthFrame(ptr);
 
-        if (rs2_is_frame_extendable_to(ptr, Extension.VideoFrame.getIndex(), error) > 0)
+        if (rs2_is_frame_extendable_to(ptr, Extension.VideoFrame.getIndex(), RealSenseError.getInstance()) > 0)
             return new VideoFrame(ptr);
 
         return new Frame(ptr);

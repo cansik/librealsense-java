@@ -7,7 +7,7 @@ import org.intel.rs.frame.FrameList;
 import org.intel.rs.frame.FrameQueue;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class Syncer extends ProcessingBlock {
@@ -15,22 +15,20 @@ public class Syncer extends ProcessingBlock {
 
     public Syncer()
     {
-        rs2_error error = new rs2_error();
-        instance = rs2_create_sync_processing_block(error);
-        checkError(error);
+        instance = rs2_create_sync_processing_block(RealSenseError.getInstance());
+        RealSenseError.checkError();
 
-        rs2_start_processing_queue(instance, queue.getInstance(), error);
-        checkError(error);
+        rs2_start_processing_queue(instance, queue.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 
     public void submitFrame(Frame frame)
     {
-        rs2_error error = new rs2_error();
-        rs2_frame_add_ref(frame.getInstance(), error);
-        checkError(error);
+        rs2_frame_add_ref(frame.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
 
-        rs2_process_frame(instance, frame.getInstance(), error);
-        checkError(error);
+        rs2_process_frame(instance, frame.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 
     public FrameList waitForFrames() {
@@ -39,17 +37,15 @@ public class Syncer extends ProcessingBlock {
 
     public FrameList waitForFrames(int timeout)
     {
-        rs2_error error = new rs2_error();
-        rs2_frame ptr = rs2_wait_for_frame(queue.getInstance(), timeout, error);
-        checkError(error);
+        rs2_frame ptr = rs2_wait_for_frame(queue.getInstance(), timeout, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return new FrameList(ptr);
     }
 
     public boolean pollForFrames(FrameList result)
     {
-        rs2_error error = new rs2_error();
-        int res = rs2_poll_for_frame(queue.getInstance(), result.getInstance(), error);
-        checkError(error);
+        int res = rs2_poll_for_frame(queue.getInstance(), result.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return toBoolean(res);
     }

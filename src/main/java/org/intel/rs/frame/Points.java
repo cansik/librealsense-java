@@ -6,7 +6,7 @@ import org.bytedeco.librealsense2.*;
 import org.intel.rs.types.Pixel;
 import org.intel.rs.types.Vertex;
 
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 
 public class Points extends Frame {
 
@@ -15,17 +15,15 @@ public class Points extends Frame {
     }
 
     public int count() {
-        rs2_error error = new rs2_error();
-        int count = rs2_get_frame_points_count(instance, error);
-        checkError(error);
+        int count = rs2_get_frame_points_count(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return count;
     }
 
     public rs2_vertex getVertexData() {
         // todo: create method with java array as output
-        rs2_error error = new rs2_error();
-        rs2_vertex vertexPtr = rs2_get_frame_vertices(instance, error);
-        checkError(error);
+        rs2_vertex vertexPtr = rs2_get_frame_vertices(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return vertexPtr;
     }
 
@@ -44,9 +42,8 @@ public class Points extends Frame {
     }
 
     public rs2_pixel getTextureCoordinateData() {
-        rs2_error error = new rs2_error();
-        rs2_pixel pixelPtr = rs2_get_frame_texture_coordinates(instance, error);
-        checkError(error);
+        rs2_pixel pixelPtr = rs2_get_frame_texture_coordinates(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return pixelPtr;
     }
 
@@ -65,8 +62,7 @@ public class Points extends Frame {
     }
 
     public void exportToPly(String fileName, Frame texture) {
-        rs2_error error = new rs2_error();
-        rs2_export_to_ply(instance, fileName, texture.instance, error);
-        checkError(error);
+        rs2_export_to_ply(instance, fileName, texture.instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 }

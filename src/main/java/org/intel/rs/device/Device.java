@@ -7,6 +7,7 @@ import org.intel.rs.sensor.SensorList;
 import static org.intel.rs.util.RealSenseUtil.*;
 import static org.bytedeco.librealsense2.global.realsense2.*;
 import org.bytedeco.librealsense2.*;
+import org.intel.rs.util.RealSenseError;
 
 public class Device implements NativeDecorator<rs2_device> {
     protected rs2_device instance;
@@ -16,9 +17,8 @@ public class Device implements NativeDecorator<rs2_device> {
     }
 
     public SensorList querySensors() {
-        rs2_error error = new rs2_error();
-        rs2_sensor_list sensors = rs2_query_sensors(instance, error);
-        checkError(error);
+        rs2_sensor_list sensors = rs2_query_sensors(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return new SensorList(sensors);
     }
@@ -70,16 +70,15 @@ public class Device implements NativeDecorator<rs2_device> {
 
     public String getInfo(int info) {
         // check if info is supported
-        rs2_error error = new rs2_error();
-        boolean isSupported = toBoolean(rs2_supports_device_info(instance, info, error));
-        checkError(error);
+        boolean isSupported = toBoolean(rs2_supports_device_info(instance, info, RealSenseError.getInstance()));
+        RealSenseError.checkError();
 
         if(!isSupported)
             return null;
 
         // read device info
-        String infoText = rs2_get_device_info(instance, info, error).getString();
-        checkError(error);
+        String infoText = rs2_get_device_info(instance, info, RealSenseError.getInstance()).getString();
+        RealSenseError.checkError();
 
         return infoText;
     }
@@ -96,9 +95,8 @@ public class Device implements NativeDecorator<rs2_device> {
     }
 
     public boolean isExtendableTo(Extension extension) {
-        rs2_error error = new rs2_error();
-        int result = rs2_is_device_extendable_to(instance, extension.getIndex(), error);
-        checkError(error);
+        int result = rs2_is_device_extendable_to(instance, extension.getIndex(), RealSenseError.getInstance());
+        RealSenseError.checkError();
         return toBoolean(result);
     }
 

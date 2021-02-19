@@ -8,7 +8,7 @@ import org.intel.rs.frame.VideoFrame;
 
 import java.util.function.Function;
 
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 import static org.bytedeco.librealsense2.global.realsense2.*;
 
 public abstract class FilterProcessingBlock extends ProcessingBlock {
@@ -16,21 +16,19 @@ public abstract class FilterProcessingBlock extends ProcessingBlock {
     private final FrameQueue queue = new FrameQueue(1);
 
     public FilterProcessingBlock(Function<rs2_error, rs2_processing_block> createFilterBlock) {
-        rs2_error error = new rs2_error();
-        instance = createFilterBlock.apply(error);
-        checkError(error);
+        instance = createFilterBlock.apply(RealSenseError.getInstance());
+        RealSenseError.checkError();
 
-        rs2_start_processing_queue(instance, queue.getInstance(), error);
-        checkError(error);
+        rs2_start_processing_queue(instance, queue.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 
     public <T extends Frame> T process(VideoFrame original) {
-        rs2_error error = new rs2_error();
-        rs2_frame_add_ref(original.getInstance(), error);
-        checkError(error);
+        rs2_frame_add_ref(original.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
 
-        rs2_process_frame(instance, original.getInstance(), error);
-        checkError(error);
+        rs2_process_frame(instance, original.getInstance(), RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return (T) queue.waitForFrame();
     }

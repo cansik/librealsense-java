@@ -6,6 +6,7 @@ import org.intel.rs.types.Extension;
 import org.intel.rs.util.NativeDecorator;
 import org.intel.rs.sensor.Sensor;
 import org.intel.rs.stream.StreamProfile;
+import org.intel.rs.util.RealSenseError;
 import org.intel.rs.util.TimeStampDomain;
 
 import java.nio.ByteBuffer;
@@ -30,17 +31,15 @@ public class Frame implements NativeDecorator<rs2_frame> {
     }
 
     public boolean isExtendableTo(int extension) {
-        rs2_error error = new rs2_error();
-        int result = rs2_is_frame_extendable_to(instance, extension, error);
-        checkError(error);
+        int result = rs2_is_frame_extendable_to(instance, extension, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return toBoolean(result);
     }
 
     public Frame clone() {
-        rs2_error error = new rs2_error();
-        rs2_frame_add_ref(instance, error);
-        checkError(error);
+        rs2_frame_add_ref(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return new Frame(instance);
     }
@@ -54,16 +53,14 @@ public class Frame implements NativeDecorator<rs2_frame> {
     }
 
     public int getDataSize() {
-        rs2_error error = new rs2_error();
-        int size = rs2_get_frame_data_size(instance, error);
-        checkError(error);
+        int size = rs2_get_frame_data_size(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return size;
     }
 
     public Pointer getDataPointer() {
-        rs2_error error = new rs2_error();
-        Pointer dataPtr = rs2_get_frame_data(instance, error);
-        checkError(error);
+        Pointer dataPtr = rs2_get_frame_data(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return dataPtr;
     }
 
@@ -94,9 +91,8 @@ public class Frame implements NativeDecorator<rs2_frame> {
 
     public StreamProfile getProfile()
     {
-        rs2_error error = new rs2_error();
-        rs2_stream_profile streamProfile = rs2_get_frame_stream_profile(instance, error);
-        checkError(error);
+        rs2_stream_profile streamProfile = rs2_get_frame_stream_profile(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return new StreamProfile(streamProfile);
     }
@@ -106,45 +102,39 @@ public class Frame implements NativeDecorator<rs2_frame> {
     }
 
     public long getNumber() {
-        rs2_error error = new rs2_error();
-        long result = rs2_get_frame_number(instance, error);
-        checkError(error);
+        long result = rs2_get_frame_number(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return result;
     }
 
     public double getTimestamp() {
-        rs2_error error = new rs2_error();
-        double result = rs2_get_frame_timestamp(instance, error);
-        checkError(error);
+        double result = rs2_get_frame_timestamp(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return result;
     }
 
     public TimeStampDomain getTimeStampDomain() {
-        rs2_error error = new rs2_error();
-        int result = rs2_get_frame_timestamp_domain(instance, error);
-        checkError(error);
+        int result = rs2_get_frame_timestamp_domain(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return new TimeStampDomain(result);
     }
 
     public Sensor getSensor() {
-        rs2_error error = new rs2_error();
-        rs2_sensor result = rs2_get_frame_sensor(instance, error);
-        checkError(error);
+        rs2_sensor result = rs2_get_frame_sensor(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return new Sensor(result);
     }
 
     // region Meta Data Information
     public double getMetaData(int value) {
-        rs2_error error = new rs2_error();
-        double result = rs2_get_frame_metadata(instance, value, error);
-        checkError(error);
+        double result = rs2_get_frame_metadata(instance, value, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return result;
     }
 
     public boolean isMetaDataSupported(int value) {
-        rs2_error error = new rs2_error();
-        int result = rs2_supports_frame_metadata(instance, value, error);
-        checkError(error);
+        int result = rs2_supports_frame_metadata(instance, value, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return toBoolean(result);
     }
 

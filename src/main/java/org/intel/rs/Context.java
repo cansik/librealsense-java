@@ -8,6 +8,7 @@ import org.intel.rs.util.NativeDecorator;
 import static org.bytedeco.librealsense2.global.realsense2.*;
 
 import org.bytedeco.librealsense2.*;
+import org.intel.rs.util.RealSenseError;
 
 import static org.intel.rs.util.RealSenseUtil.*;
 
@@ -17,9 +18,8 @@ public class Context implements NativeDecorator<rs2_context> {
     private rs2_devices_changed_callback_ptr devicesChangedCallbackPointer;
 
     public Context() {
-        rs2_error error = new rs2_error();
-        instance = rs2_create_context(RS2_API_VERSION, error);
-        checkError(error);
+        instance = rs2_create_context(RS2_API_VERSION, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         // setup device changed callback
         devicesChangedCallbackPointer = new rs2_devices_changed_callback_ptr() {
@@ -36,14 +36,13 @@ public class Context implements NativeDecorator<rs2_context> {
             }
         };
 
-        rs2_set_devices_changed_callback(instance, devicesChangedCallbackPointer, null, error);
-        checkError(error);
+        rs2_set_devices_changed_callback(instance, devicesChangedCallbackPointer, null, RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 
     public DeviceList queryDevices() {
-        rs2_error error = new rs2_error();
-        rs2_device_list devices = rs2_query_devices(instance, error);
-        checkError(error);
+        rs2_device_list devices = rs2_query_devices(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return new DeviceList(devices);
     }

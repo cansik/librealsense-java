@@ -7,7 +7,7 @@ import org.bytedeco.librealsense2.rs2_stream_profile;
 
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_video_stream_intrinsics;
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_video_stream_resolution;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 
 public class VideoStreamProfile extends StreamProfile {
     private int width;
@@ -18,20 +18,17 @@ public class VideoStreamProfile extends StreamProfile {
 
         IntPointer widthPtr = new IntPointer(1);
         IntPointer heightPtr = new IntPointer(1);
-
-        rs2_error error = new rs2_error();
-        rs2_get_video_stream_resolution(instance, widthPtr, heightPtr, error);
-        checkError(error);
+        rs2_get_video_stream_resolution(instance, widthPtr, heightPtr, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         this.width = widthPtr.get();
         this.height = heightPtr.get();
     }
 
     public rs2_intrinsics getIntrinsics() {
-        rs2_error error = new rs2_error();
         rs2_intrinsics intrinsics = new rs2_intrinsics(1);
-        rs2_get_video_stream_intrinsics(instance, intrinsics, error);
-        checkError(error);
+        rs2_get_video_stream_intrinsics(instance, intrinsics, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return intrinsics;
     }
 

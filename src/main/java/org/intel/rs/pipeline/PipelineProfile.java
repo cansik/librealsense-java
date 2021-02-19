@@ -1,6 +1,6 @@
 package org.intel.rs.pipeline;
 
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 import static org.bytedeco.librealsense2.global.realsense2.*;
 
 import org.bytedeco.librealsense2.*;
@@ -18,16 +18,14 @@ public class PipelineProfile implements NativeDecorator<rs2_pipeline_profile> {
     }
 
     public Device getDevice() {
-        rs2_error error = new rs2_error();
-        rs2_device ptr = rs2_pipeline_profile_get_device(instance, error);
-        checkError(error);
+        rs2_device ptr = rs2_pipeline_profile_get_device(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return new Device(ptr);
     }
 
     public StreamProfileList getStreams() {
-        rs2_error error = new rs2_error();
-        rs2_stream_profile_list ptr = rs2_pipeline_profile_get_streams(instance, error);
-        checkError(error);
+        rs2_stream_profile_list ptr = rs2_pipeline_profile_get_streams(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return new StreamProfileList(ptr);
     }
 

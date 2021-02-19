@@ -4,7 +4,7 @@ import org.intel.rs.util.NativeDecorator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
 import org.bytedeco.librealsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class FrameQueue implements NativeDecorator<rs2_frame_queue> {
@@ -15,16 +15,14 @@ public class FrameQueue implements NativeDecorator<rs2_frame_queue> {
     }
 
     public FrameQueue(int capacity) {
-        rs2_error error = new rs2_error();
-        instance = rs2_create_frame_queue(capacity, error);
-        checkError(error);
+        instance = rs2_create_frame_queue(capacity, RealSenseError.getInstance());
+        RealSenseError.checkError();
     }
 
     public boolean pollForFrame(Frame frame)
     {
-        rs2_error error = new rs2_error();
-        int res = rs2_poll_for_frame(instance, frame.instance, error);
-        checkError(error);
+        int res = rs2_poll_for_frame(instance, frame.instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return toBoolean(res);
     }
@@ -35,9 +33,8 @@ public class FrameQueue implements NativeDecorator<rs2_frame_queue> {
 
     public Frame waitForFrame(int timeout)
     {
-        rs2_error error = new rs2_error();
-        rs2_frame frame = rs2_wait_for_frame(instance, timeout, error);
-        checkError(error);
+        rs2_frame frame = rs2_wait_for_frame(instance, timeout, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return FrameList.createFrame(frame);
     }
 
@@ -47,17 +44,15 @@ public class FrameQueue implements NativeDecorator<rs2_frame_queue> {
 
     public FrameList waitForFrames(int timeout)
     {
-        rs2_error error = new rs2_error();
-        rs2_frame frame = rs2_wait_for_frame(instance, timeout, error);
-        checkError(error);
+        rs2_frame frame = rs2_wait_for_frame(instance, timeout, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return new FrameList(frame);
     }
 
     public void enqueue(Frame frame)
     {
-        rs2_error error = new rs2_error();
-        rs2_frame_add_ref(frame.instance, error);
-        checkError(error);
+        rs2_frame_add_ref(frame.instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         rs2_enqueue_frame(frame.instance, instance);
     }

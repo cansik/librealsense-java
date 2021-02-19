@@ -6,11 +6,11 @@ import org.bytedeco.librealsense2.rs2_error;
 import org.intel.rs.util.NativeDecorator;
 import org.intel.rs.util.NativeList;
 import org.intel.rs.util.NativeListIterator;
+import org.intel.rs.util.RealSenseError;
 
 import java.util.Iterator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class DeviceList implements NativeDecorator<rs2_device_list>, NativeList<Device> {
@@ -21,25 +21,22 @@ public class DeviceList implements NativeDecorator<rs2_device_list>, NativeList<
     }
 
     public boolean contains(Device device) {
-        rs2_error error = new rs2_error();
-        int result = rs2_device_list_contains(instance, device.instance, error);
-        checkError(error);
+        int result = rs2_device_list_contains(instance, device.instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return toBoolean(result);
     }
 
     @Override
     public Device get(int index) {
-        rs2_error error = new rs2_error();
-        rs2_device device = rs2_create_device(instance, index, error);
-        checkError(error);
+        rs2_device device = rs2_create_device(instance, index, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return new Device(device);
     }
 
     @Override
     public int count() {
-        rs2_error error = new rs2_error();
-        int deviceCount = rs2_get_device_count(instance, error);
-        checkError(error);
+        int deviceCount = rs2_get_device_count(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         return deviceCount;
     }

@@ -10,7 +10,7 @@ import org.intel.rs.util.NativeListIterator;
 import java.util.Iterator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class StreamProfileList implements NativeDecorator<rs2_stream_profile_list>, NativeList<StreamProfile> {
@@ -22,29 +22,28 @@ public class StreamProfileList implements NativeDecorator<rs2_stream_profile_lis
 
     @Override
     public StreamProfile get(int index) {
-        rs2_error error = new rs2_error();
-        rs2_stream_profile profile = rs2_get_stream_profile(instance, index, error);
-        checkError(error);
+        rs2_stream_profile profile = rs2_get_stream_profile(instance, index, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         // check if profile is video
-        boolean isVideoProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_VIDEO_PROFILE, error));
-        checkError(error);
+        boolean isVideoProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_VIDEO_PROFILE, RealSenseError.getInstance()));
+        RealSenseError.checkError();
 
         if(isVideoProfile) {
             return new VideoStreamProfile(profile);
         }
 
         // check if profile is pose
-        boolean isPoseProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_POSE_PROFILE, error));
-        checkError(error);
+        boolean isPoseProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_POSE_PROFILE, RealSenseError.getInstance()));
+        RealSenseError.checkError();
 
         if(isPoseProfile) {
             return new PoseStreamProfile(profile);
         }
 
         // check if profile is motion
-        boolean isMotionProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_MOTION_PROFILE, error));
-        checkError(error);
+        boolean isMotionProfile = toBoolean(rs2_stream_profile_is(profile, RS2_EXTENSION_MOTION_PROFILE, RealSenseError.getInstance()));
+        RealSenseError.checkError();
 
         if(isMotionProfile) {
             return new MotionStreamProfile(profile);
@@ -55,9 +54,8 @@ public class StreamProfileList implements NativeDecorator<rs2_stream_profile_lis
 
     @Override
     public int count() {
-        rs2_error error = new rs2_error();
-        int count = rs2_get_stream_profiles_count(instance, error);
-        checkError(error);
+        int count = rs2_get_stream_profiles_count(instance, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return count;
     }
 

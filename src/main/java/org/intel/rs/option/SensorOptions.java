@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_option_value_description;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 
 public class SensorOptions implements Iterable<CameraOption> {
     private static List<Option> optionValues = Arrays.asList(Option.class.getEnumConstants());
@@ -30,10 +30,8 @@ public class SensorOptions implements Iterable<CameraOption> {
 
     public String getOptionValueDescription(Option option, float value) {
         rs2_options options = new rs2_options(sensor);
-
-        rs2_error error = new rs2_error();
-        BytePointer desc = rs2_get_option_value_description(options, option.getIndex(), value, error);
-        checkError(error);
+        BytePointer desc = rs2_get_option_value_description(options, option.getIndex(), value, RealSenseError.getInstance());
+        RealSenseError.checkError();
 
         if (!desc.isNull()) {
             return desc.getString();

@@ -10,7 +10,7 @@ import org.intel.rs.util.NativeDecorator;
 
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_extrinsics;
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_stream_profile_data;
-import static org.intel.rs.util.RealSenseUtil.checkError;
+import org.intel.rs.util.RealSenseError;
 
 public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     rs2_stream_profile instance;
@@ -30,15 +30,14 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
 
         // load stream profile data
         synchronized (dataLock) {
-            rs2_error error = new rs2_error();
             rs2_get_stream_profile_data(instance,
                     data.getPointer(0),
                     data.getPointer(1),
                     data.getPointer(2),
                     data.getPointer(3),
                     data.getPointer(4),
-                    error);
-            checkError(error);
+                    RealSenseError.getInstance());
+            RealSenseError.checkError();
 
             nativeStreamIndex = data.get(0);
             nativeFormatIndex = data.get(1);
@@ -49,10 +48,9 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     }
 
     public rs2_extrinsics getExtrinsicsTo(StreamProfile other) {
-        rs2_error error = new rs2_error();
         rs2_extrinsics extrinsics = new rs2_extrinsics(1);
-        rs2_get_extrinsics(instance, other.getInstance(), extrinsics, error);
-        checkError(error);
+        rs2_get_extrinsics(instance, other.getInstance(), extrinsics, RealSenseError.getInstance());
+        RealSenseError.checkError();
         return extrinsics;
     }
 
