@@ -85,6 +85,10 @@ public class ProcessingBlockTest {
 
         decimatedFrame.release();
         colorizedDepth.release();
+
+        colorFrame.release();
+        depthFrame.release();
+
         alignedFrames.release();
         frames.release();
     }

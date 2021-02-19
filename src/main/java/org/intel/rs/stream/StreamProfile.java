@@ -10,28 +10,43 @@ import static org.intel.rs.util.RealSenseUtil.checkError;
 
 import org.bytedeco.librealsense2.*;
 
+import java.nio.IntBuffer;
+
 public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     rs2_stream_profile instance;
 
-    private IntPointer nativeStreamIndex = new IntPointer(1);
-    private IntPointer nativeFormatIndex = new IntPointer(1);
-    private IntPointer index = new IntPointer(1);
-    private IntPointer uniqueId = new IntPointer(1);
-    private IntPointer frameRate = new IntPointer(1);
+    private final int nativeStreamIndex;
+    private final int nativeFormatIndex;
+    private final int index;
+    private final int uniqueId;
+    private final int frameRate;
+
+    // instantiate int-pointer here to avoid memory leak: problematic it is not thread-safe anymore!
+    // private static final IntPointer data = new IntPointer(5);
 
     public StreamProfile(rs2_stream_profile instance) {
         this.instance = instance;
 
         // load stream profile data
         rs2_error error = new rs2_error();
+        IntPointer data = new IntPointer(5);
+
         rs2_get_stream_profile_data(instance,
-                nativeStreamIndex,
-                nativeFormatIndex,
-                index,
-                uniqueId,
-                frameRate,
+                data.getPointer(0),
+                data.getPointer(1),
+                data.getPointer(2),
+                data.getPointer(3),
+                data.getPointer(4),
                 error);
         checkError(error);
+
+        nativeStreamIndex = data.get(0);
+        nativeFormatIndex = data.get(1);
+        index = data.get(2);
+        uniqueId = data.get(3);
+        frameRate = data.get(4);
+
+        data.deallocate();
     }
 
     public rs2_extrinsics getExtrinsicsTo(StreamProfile other) {
@@ -44,7 +59,7 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
 
 
     public int getNativeStreamIndex() {
-        return nativeStreamIndex.get();
+        return nativeStreamIndex;
     }
 
     public Stream getStream() {
@@ -52,7 +67,7 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     }
 
     public int getNativeFormatIndex() {
-        return nativeFormatIndex.get();
+        return nativeFormatIndex;
     }
 
     public Format getFormat() {
@@ -60,15 +75,15 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     }
 
     public int getIndex() {
-        return index.get();
+        return index;
     }
 
     public int getUniqueId() {
-        return uniqueId.get();
+        return uniqueId;
     }
 
     public int getFrameRate() {
-        return frameRate.get();
+        return frameRate;
     }
 
     @Override
@@ -78,6 +93,8 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
 
     @Override
     public void release() {
-        rs2_delete_stream_profile(instance);
+        // warning: only use on a copy
+        // rs2_delete_stream_profile(instance)
+        instance.releaseReference();
     }
 }

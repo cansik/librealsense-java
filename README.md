@@ -1,4 +1,4 @@
-# Intel RealSense Java
+# Intel RealSense Java [![](https://jitpack.io/v/cansik/librealsense-java.svg)](https://jitpack.io/#cansik/librealsense-java)
 Intel® RealSense™ SDK 2 wrapper for Java.
 
 Supported version: `v2.40.0`
