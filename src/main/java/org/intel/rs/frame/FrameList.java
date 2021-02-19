@@ -2,6 +2,7 @@ package org.intel.rs.frame;
 
 import org.bytedeco.librealsense2.rs2_error;
 import org.bytedeco.librealsense2.rs2_frame;
+import org.intel.rs.stream.StreamProfile;
 import org.intel.rs.types.Extension;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Stream;
@@ -74,10 +75,13 @@ public class FrameList extends Frame implements NativeList<Frame> {
 
     public <T extends Frame> T getFirstOrDefault(Stream stream, Format format) {
         for (Frame frame : this) {
-            if (frame.getProfile().getStream() == stream
-                    && (Format.Any == format || frame.getProfile().getFormat() == format)) {
+            StreamProfile profile = frame.getProfile();
+            if (profile.getStream() == stream
+                    && (Format.Any == format || profile.getFormat() == format)) {
+                profile.release();
                 return (T) frame;
             }
+            profile.release();
             frame.release();
         }
         return null;
