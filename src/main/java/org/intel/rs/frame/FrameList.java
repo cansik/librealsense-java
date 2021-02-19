@@ -73,10 +73,8 @@ public class FrameList extends Frame implements NativeList<Frame> {
             StreamProfile profile = frame.getProfile();
             if (profile.getStream() == stream
                     && (Format.Any == format || profile.getFormat() == format)) {
-                profile.release();
                 return (T) frame;
             }
-            profile.release();
             frame.release();
         }
         return null;

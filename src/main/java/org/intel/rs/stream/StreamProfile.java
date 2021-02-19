@@ -1,16 +1,15 @@
 package org.intel.rs.stream;
 
 import org.bytedeco.javacpp.IntPointer;
-import org.bytedeco.librealsense2.rs2_error;
 import org.bytedeco.librealsense2.rs2_extrinsics;
 import org.bytedeco.librealsense2.rs2_stream_profile;
 import org.intel.rs.types.Format;
 import org.intel.rs.types.Stream;
 import org.intel.rs.util.NativeDecorator;
+import org.intel.rs.util.RealSenseError;
 
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_extrinsics;
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_stream_profile_data;
-import org.intel.rs.util.RealSenseError;
 
 public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     rs2_stream_profile instance;
@@ -21,30 +20,29 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     private final int uniqueId;
     private final int frameRate;
 
-    // instantiate int-pointer here to avoid memory leak: problematic it is not thread-safe anymore!
-    private static final IntPointer data = new IntPointer(5);
-    private static final Object dataLock = new Object();
+    // instantiate int-pointer per thread here to avoid memory leak
+    private static ThreadLocal<IntPointer> _data = ThreadLocal.withInitial(() -> new IntPointer(5));
 
     public StreamProfile(rs2_stream_profile instance) {
         this.instance = instance;
 
         // load stream profile data
-        synchronized (dataLock) {
-            rs2_get_stream_profile_data(instance,
-                    data.getPointer(0),
-                    data.getPointer(1),
-                    data.getPointer(2),
-                    data.getPointer(3),
-                    data.getPointer(4),
-                    RealSenseError.getInstance());
-            RealSenseError.checkError();
+        IntPointer data = _data.get();
 
-            nativeStreamIndex = data.get(0);
-            nativeFormatIndex = data.get(1);
-            index = data.get(2);
-            uniqueId = data.get(3);
-            frameRate = data.get(4);
-        }
+        rs2_get_stream_profile_data(instance,
+                data.getPointer(0),
+                data.getPointer(1),
+                data.getPointer(2),
+                data.getPointer(3),
+                data.getPointer(4),
+                RealSenseError.getInstance());
+        RealSenseError.checkError();
+
+        nativeStreamIndex = data.get(0);
+        nativeFormatIndex = data.get(1);
+        index = data.get(2);
+        uniqueId = data.get(3);
+        frameRate = data.get(4);
     }
 
     public rs2_extrinsics getExtrinsicsTo(StreamProfile other) {

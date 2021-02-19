@@ -1,16 +1,15 @@
 package org.intel.rs.stream;
 
-import org.bytedeco.librealsense2.rs2_error;
 import org.bytedeco.librealsense2.rs2_stream_profile;
 import org.bytedeco.librealsense2.rs2_stream_profile_list;
 import org.intel.rs.util.NativeDecorator;
 import org.intel.rs.util.NativeList;
 import org.intel.rs.util.NativeListIterator;
+import org.intel.rs.util.RealSenseError;
 
 import java.util.Iterator;
 
 import static org.bytedeco.librealsense2.global.realsense2.*;
-import org.intel.rs.util.RealSenseError;
 import static org.intel.rs.util.RealSenseUtil.toBoolean;
 
 public class StreamProfileList implements NativeDecorator<rs2_stream_profile_list>, NativeList<StreamProfile> {

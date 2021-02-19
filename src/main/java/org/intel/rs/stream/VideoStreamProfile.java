@@ -1,13 +1,12 @@
 package org.intel.rs.stream;
 
 import org.bytedeco.javacpp.IntPointer;
-import org.bytedeco.librealsense2.rs2_error;
 import org.bytedeco.librealsense2.rs2_intrinsics;
 import org.bytedeco.librealsense2.rs2_stream_profile;
+import org.intel.rs.util.RealSenseError;
 
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_video_stream_intrinsics;
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_video_stream_resolution;
-import org.intel.rs.util.RealSenseError;
 
 public class VideoStreamProfile extends StreamProfile {
     private int width;
