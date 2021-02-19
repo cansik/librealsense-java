@@ -1,6 +1,7 @@
 package org.intel.rs.stream;
 
 import org.bytedeco.javacpp.IntPointer;
+import org.bytedeco.librealsense2.rs2_error;
 import org.bytedeco.librealsense2.rs2_extrinsics;
 import org.bytedeco.librealsense2.rs2_stream_profile;
 import org.intel.rs.types.Format;
@@ -10,6 +11,7 @@ import org.intel.rs.util.RealSenseError;
 
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_extrinsics;
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_stream_profile_data;
+import static org.intel.rs.util.RealSenseError.checkError;
 
 public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     rs2_stream_profile instance;
@@ -21,28 +23,30 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     private final int frameRate;
 
     // instantiate int-pointer per thread here to avoid memory leak
-    private static ThreadLocal<IntPointer> _data = ThreadLocal.withInitial(() -> new IntPointer(5));
+    private static final ThreadLocal<IntPointer> nativeStreamIndexPtr = ThreadLocal.withInitial(() -> new IntPointer(1));
+    private static final ThreadLocal<IntPointer> nativeFormatIndexPtr = ThreadLocal.withInitial(() -> new IntPointer(1));
+    private static final ThreadLocal<IntPointer> indexPtr = ThreadLocal.withInitial(() -> new IntPointer(1));
+    private static final ThreadLocal<IntPointer> uniqueIdPtr = ThreadLocal.withInitial(() -> new IntPointer(1));
+    private static final ThreadLocal<IntPointer> frameRatePtr = ThreadLocal.withInitial(() -> new IntPointer(1));
 
     public StreamProfile(rs2_stream_profile instance) {
         this.instance = instance;
 
         // load stream profile data
-        IntPointer data = _data.get();
-
         rs2_get_stream_profile_data(instance,
-                data.getPointer(0),
-                data.getPointer(1),
-                data.getPointer(2),
-                data.getPointer(3),
-                data.getPointer(4),
+                nativeStreamIndexPtr.get(),
+                nativeFormatIndexPtr.get(),
+                indexPtr.get(),
+                uniqueIdPtr.get(),
+                frameRatePtr.get(),
                 RealSenseError.getInstance());
         RealSenseError.checkError();
 
-        nativeStreamIndex = data.get(0);
-        nativeFormatIndex = data.get(1);
-        index = data.get(2);
-        uniqueId = data.get(3);
-        frameRate = data.get(4);
+        nativeStreamIndex = nativeStreamIndexPtr.get().get(0);
+        nativeFormatIndex = nativeFormatIndexPtr.get().get(0);
+        index = indexPtr.get().get(0);
+        uniqueId = uniqueIdPtr.get().get(0);
+        frameRate = frameRatePtr.get().get(0);
     }
 
     public rs2_extrinsics getExtrinsicsTo(StreamProfile other) {
@@ -90,6 +94,5 @@ public class StreamProfile implements NativeDecorator<rs2_stream_profile> {
     public void release() {
         // warning: only use on a copy
         // rs2_delete_stream_profile(instance)
-        instance.deallocate();
     }
 }
