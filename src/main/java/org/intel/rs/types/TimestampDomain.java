@@ -2,8 +2,13 @@ package org.intel.rs.types;
 
 public enum TimestampDomain
 {
+    //  Frame timestamp was measured in relation to the camera clock
     HardwareClock(0),
-    SystemTime(1);
+
+    //  Frame timestamp was measured in relation to the OS system clock
+    SystemTime(1),
+
+    GlobalTime(2);
 
     private int index;
 
