@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.intel.rs'
-version '2.44.0-0.4.1'
+version '2.44.0-0.4.2'
 
 sourceCompatibility = 1.8
 
