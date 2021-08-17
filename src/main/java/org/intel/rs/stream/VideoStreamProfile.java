@@ -3,6 +3,7 @@ package org.intel.rs.stream;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.librealsense2.rs2_intrinsics;
 import org.bytedeco.librealsense2.rs2_stream_profile;
+import org.intel.rs.types.Intrinsics;
 import org.intel.rs.util.RealSenseError;
 
 import static org.bytedeco.librealsense2.global.realsense2.rs2_get_video_stream_intrinsics;
@@ -24,11 +25,11 @@ public class VideoStreamProfile extends StreamProfile {
         this.height = heightPtr.get();
     }
 
-    public rs2_intrinsics getIntrinsics() {
+    public Intrinsics getIntrinsics() {
         rs2_intrinsics intrinsics = new rs2_intrinsics(1);
         rs2_get_video_stream_intrinsics(instance, intrinsics, RealSenseError.getInstance());
         RealSenseError.checkError();
-        return intrinsics;
+        return new Intrinsics(intrinsics);
     }
 
     public int getWidth() {
