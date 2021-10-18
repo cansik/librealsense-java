@@ -13,8 +13,8 @@ public class Utils {
     public static Vertex deprojectPixelToPoint(final Intrinsics intrinsics, final Pixel pixel, final float depth) {
         FloatPointer point = new FloatPointer(3);
         FloatPointer pixelPtr = new FloatPointer(2);
-
-        pixelPtr.put(pixel.getI(), pixel.getJ());
+        pixelPtr.put(0, pixel.getI());
+        pixelPtr.put(1, pixel.getJ());
         rs2_deproject_pixel_to_point(point, intrinsics.getInstance(), pixelPtr, depth);
 
         return new Vertex(point.get(0), point.get(1), point.get(2));
