@@ -1,7 +1,7 @@
 # Intel RealSense Java [![](https://jitpack.io/v/cansik/librealsense-java.svg)](https://jitpack.io/#cansik/librealsense-java)
 Intel® RealSense™ SDK 2 wrapper for Java.
 
-Supported version: `v2.44.0`
+Supported version: `v2.50.0`
 
 Following binaries are pre-compiled within the release jar:
 
@@ -11,7 +11,7 @@ Following binaries are pre-compiled within the release jar:
 
 #### Important ⚠️
 - The library is still under development
-- Not all methods have been ported yet to fully support `2.44.0` through the high level API
+- Not all methods have been ported yet to fully support `2.50.0` through the high level API
 
 ### Gradle / Maven
 Include the library directly into your gradle / maven build by using [jitpack](https://jitpack.io/#cansik/librealsense-java).
@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.cansik:librealsense-java:2.44.0-0.4.3'
+    implementation 'com.github.cansik:librealsense-java:2.50.0-0.5.0'
 }
 ```
 
