@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.intel.rs'
-version '2.50.0-0.5.0'
+version '2.53.1-0.6.0'
 
 sourceCompatibility = 1.8
 
@@ -18,11 +18,11 @@ dependencies {
     testImplementation group: 'org.processing', name: 'core', version: '3.3.7'
 
     // java cpp
-    implementation group: 'org.bytedeco', name: 'javacpp', version: '1.5.7'
+    implementation group: 'org.bytedeco', name: 'javacpp', version: '1.5.9'
 
     // librealsense2
-    implementation group: 'org.bytedeco', name: 'librealsense2', version: '2.50.0-1.5.7'
-    implementation group: 'org.bytedeco', name: 'librealsense2-platform', version: '2.50.0-1.5.7'
+    implementation group: 'org.bytedeco', name: 'librealsense2', version: '2.53.1-1.5.9'
+    implementation group: 'org.bytedeco', name: 'librealsense2-platform', version: '2.53.1-1.5.9'
 }
 
 task fatJar(type: Jar) {
