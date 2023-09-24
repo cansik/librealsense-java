@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.cansik:librealsense-java:2.53.1-0.6.0'
+    implementation 'com.github.cansik:librealsense-java:v2.53.1-0.6.0'
 }
 ```
 
